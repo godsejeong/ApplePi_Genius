@@ -13,6 +13,7 @@
     <style name="EditStyle">
         <item name="colorControlNormal">#4f4f4f</item>
         <item name="android:textColorHighlight">#4f4f4f</item>
+        <item name="colorControlActivated">#4f4f4f</item>
     </style>
 
 </resources>

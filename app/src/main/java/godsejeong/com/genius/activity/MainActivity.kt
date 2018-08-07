@@ -1,7 +1,8 @@
-package godsejeong.com.genius
+package godsejeong.com.genius.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import godsejeong.com.genius.R
 
 class MainActivity : AppCompatActivity() {
 

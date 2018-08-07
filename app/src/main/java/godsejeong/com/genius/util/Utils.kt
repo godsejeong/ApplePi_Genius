@@ -1,4 +1,4 @@
-package godsejeong.com.genius
+package godsejeong.com.genius.util
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -12,3 +12,4 @@ object Utils {
 
     val postService = retrofit!!.create(Services::class.java)
 }
+
