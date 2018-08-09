@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:id="@+id/snackbarLayout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#323232"
+              android:padding="15dp">
+
+    <TextView
+        android:id="@+id/message_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".6"
+        android:textColor="@android:color/white"
+        android:gravity="center_vertical"
+        android:text="정보가 맞으시면 확인을 눌러주세요"
+        />
+
+    <TextView
+        android:id="@+id/cheakView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".1"
+        android:gravity="center"
+        android:text="확인"
+        android:layout_marginRight="5dp"
+        android:textColor="#e5e5e5"/>
+
+    <TextView
+        android:id="@+id/beforeView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".1"
+        android:gravity="center"
+        android:text="이전"
+        android:textColor="#e5e5e5"/>
+</LinearLayout>

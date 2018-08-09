@@ -16,6 +16,8 @@
         <activity android:name=".activity.ProfileActivity">
         </activity>
         <activity android:name=".activity.TokenRegistrationActivity">
+        </activity>
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

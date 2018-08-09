@@ -8,4 +8,5 @@ class UserData(){
     var die : Boolean = false //유저가 해고됬는지 의미한다
     var now_room : String = "" //유저 위치를 의미한다
     var game_data : GameData? = null //유저 역할에 대한 정보를 가지고있다
+    var __v : Int = 0
 }

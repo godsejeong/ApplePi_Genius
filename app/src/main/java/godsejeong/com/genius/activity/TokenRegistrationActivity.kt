@@ -43,8 +43,8 @@ class TokenRegistrationActivity : AppCompatActivity() {
 
                         when(status) {
                             200 -> {
-                                Log.e("test",Gson().toJson(response.body()))
-                                ORMUtil(this@TokenRegistrationActivity).userORM.save(response.body()!!)
+                                Log.e("test",Gson().toJson(response.body()!!.data))
+                                ORMUtil(this@TokenRegistrationActivity).userORM.save(response.body()!!.data)
                                 startActivity<ProfileActivity>()
                                 finish()
                             }
