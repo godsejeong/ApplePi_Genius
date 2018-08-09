@@ -4,23 +4,33 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import godsejeong.com.genius.R
+import godsejeong.com.genius.data.GameData
+import godsejeong.com.genius.data.SaveUserData
 import godsejeong.com.genius.util.Utils
 import godsejeong.com.genius.data.User
+import godsejeong.com.genius.data.UserData
 import godsejeong.com.genius.util.ORMUtil
+import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_token_registration.*
+import ninja.sakib.pultusorm.core.PultusORM
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class TokenRegistrationActivity : AppCompatActivity() {
+
     var token: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_token_registration)
+        Realm.init(applicationContext)
 
         tokenNext.onClick {
             token = tokenText.text.toString()
@@ -43,8 +53,36 @@ class TokenRegistrationActivity : AppCompatActivity() {
 
                         when(status) {
                             200 -> {
+                                var mRealm = Realm.getDefaultInstance()
+
+                                mRealm.beginTransaction()
+                                var userdata : UserData = mRealm.createObject(UserData::class.java,UUID.randomUUID().toString())
+//                                 UUID.randomUUID().toString()
+                                userdata.apply {
+                                    this.die = response.body()!!.data!!.die
+                                    this.user_name = response.body()!!.data!!.user_name
+                                    this.setting = response.body()!!.data!!.setting
+                                    this.now_room = response.body()!!.data!!.now_room
+                                }
+
+                                var gamedata : GameData = mRealm.createObject(GameData::class.java,UUID.randomUUID().toString())
+                                gamedata.apply {
+                                    this.card = response.body()!!.data!!.game_data!!.card
+                                    this.department = response.body()!!.data!!.game_data!!.department
+                                    this.lose_condition = response.body()!!.data!!.game_data!!.lose_condition
+                                    this.name = response.body()!!.data!!.game_data!!.name
+                                    this.pay = response.body()!!.data!!.game_data!!.pay
+                                    this.profile = response.body()!!.data!!.game_data!!.profile
+                                    this.pay_number = response.body()!!.data!!.game_data!!.pay_number
+                                    this.rank = response.body()!!.data!!.game_data!!.rank
+                                    this.uniqueness = response.body()!!.data!!.game_data!!.uniqueness
+                                    this.win_condition = response.body()!!.data!!.game_data!!.win_condition
+                                }
+                                mRealm.commitTransaction()
+//                                val savedTest = mRealm.where(UserData::class.java).find
                                 Log.e("test",Gson().toJson(response.body()!!.data))
-                                ORMUtil(this@TokenRegistrationActivity).userORM.save(response.body()!!.data)
+//                                Log.e("realm",Gson().toJson(savedTest))
+
                                 startActivity<ProfileActivity>()
                                 finish()
                             }

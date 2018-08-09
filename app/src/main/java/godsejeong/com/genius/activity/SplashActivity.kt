@@ -25,7 +25,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var token: String?
+        var token : String? = null
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_splash)
@@ -37,7 +37,6 @@ class SplashActivity : AppCompatActivity() {
             var list: List<Any> = ORMUtil(this).userORM.find(UserData())
             var user = list[list.size - 1] as UserData
             token = user.user_token
-            Log.e("token",token)
         }catch (e : ArrayIndexOutOfBoundsException){
             token = null
         }

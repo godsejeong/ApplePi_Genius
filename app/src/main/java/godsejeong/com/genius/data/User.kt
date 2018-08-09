@@ -1,3 +1,6 @@
 package godsejeong.com.genius.data
 
-class User(var status : Int,var data : UserData)
+class User{
+    var status : Int? = null
+    var data : UserData? = null
+}

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.R.id.message
 import android.support.design.widget.Snackbar
+import android.util.Log
 import android.view.View
 import godsejeong.com.genius.R
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -15,7 +16,9 @@ import android.widget.TextView
 import android.widget.FrameLayout
 import android.view.ViewGroup
 import android.widget.LinearLayout
-
+import godsejeong.com.genius.data.SaveUserData
+import godsejeong.com.genius.data.UserData
+import io.realm.Realm
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -23,15 +26,15 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-
-
-
         showTwoButtonSnackbar()
 
-//        Snackbar.make(window.decorView.rootView, "정보가 맞으시면 확인을 눌러주세요",10000)
-//                .setAction("확인") {
-//                    startActivity<MainActivity>()
-//                }.show()
+//        Realm.getDefaultInstance().use { realm ->
+//
+//            realm.where(UserData::class.java).findAll().forEach {
+//                Log.e("asdf",it.user_token)
+//            }
+//        }
+
     }
 
     private fun showTwoButtonSnackbar() {
@@ -74,4 +77,5 @@ class ProfileActivity : AppCompatActivity() {
         // Show the Snackbar
         snackbar.show()
     }
+
 }
