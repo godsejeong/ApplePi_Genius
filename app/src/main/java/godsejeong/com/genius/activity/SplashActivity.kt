@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.startActivity
 import android.view.WindowManager
 import io.realm.Realm
+import java.util.*
 
 
 class SplashActivity : AppCompatActivity() {
@@ -24,6 +25,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Realm.init(applicationContext)
         var token: String? = null
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -34,15 +36,16 @@ class SplashActivity : AppCompatActivity() {
 
 
         try {
-            Realm.getDefaultInstance().use { realm ->
-                realm.where(UserData::class.java).findAll().forEach {
-                    token = it.user_token
-                    Log.e("splashtoken",token)
-                }
+            var realm = Realm.getDefaultInstance()
+
+            realm.where(UserData::class.java).findAll().forEach {
+                token = it.user_token
+                Log.e("splashtoken",token)
             }
-        }catch (e : RuntimeException){
+        } catch (e: RuntimeException) {
             token = null
         }
+
         startAnimations()
         hd1.postDelayed({
             endAnimation()

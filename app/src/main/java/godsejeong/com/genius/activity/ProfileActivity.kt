@@ -1,5 +1,6 @@
 package godsejeong.com.genius.activity
 
+import android.app.Service
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide
 import godsejeong.com.genius.data.GameData
 import godsejeong.com.genius.data.SaveUserData
 import godsejeong.com.genius.data.UserData
+import godsejeong.com.genius.util.Utils
 import io.realm.Realm
 import io.realm.RealmObject.deleteFromRealm
 import io.realm.RealmResults
@@ -40,7 +42,7 @@ class ProfileActivity : AppCompatActivity() {
             }
 
             realm.where(GameData::class.java).findAll().forEach {
-                Glide.with(this).load("http://aws.soylatte.kr:3000" + it.profile).into(profilePhoto)
+                Glide.with(this).load(Utils.url + it.profile).into(profilePhoto)
             }
         }
     }

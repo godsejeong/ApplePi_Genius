@@ -4,8 +4,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object Utils {
+    var url = "http://aws.soylatte.kr:3000"
     var retrofit = Retrofit.Builder()
-            .baseUrl("http://aws.soylatte.kr:3000")
+            .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
