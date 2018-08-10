@@ -79,7 +79,6 @@ class ProfileActivity : AppCompatActivity() {
         textViewTwo.setOnClickListener {
             startActivity<TokenRegistrationActivity>()
 
-
             var realm = Realm.getDefaultInstance()
 
             val User = realm.where(UserData::class.java).findAll()
