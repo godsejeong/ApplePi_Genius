@@ -28,12 +28,12 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
         showTwoButtonSnackbar()
 
-//        Realm.getDefaultInstance().use { realm ->
-//
-//            realm.where(UserData::class.java).findAll().forEach {
-//                Log.e("asdf",it.user_token)
-//            }
-//        }
+        Realm.getDefaultInstance().use { realm ->
+
+            realm.where(UserData::class.java).findAll().forEach {
+                Log.e("token",it.user_token)
+            }
+        }
 
     }
 

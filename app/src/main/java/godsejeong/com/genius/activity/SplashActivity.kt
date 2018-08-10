@@ -16,7 +16,7 @@ import godsejeong.com.genius.util.ORMUtil
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.startActivity
 import android.view.WindowManager
-
+import io.realm.Realm
 
 
 class SplashActivity : AppCompatActivity() {
@@ -25,7 +25,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var token : String? = null
+        var token: String? = null
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_splash)
@@ -33,44 +33,46 @@ class SplashActivity : AppCompatActivity() {
         var hd1 = Handler()
         var hd2 = Handler()
 
+
         try {
-            var list: List<Any> = ORMUtil(this).userORM.find(UserData())
-            var user = list[list.size - 1] as UserData
-            token = user.user_token
-        }catch (e : ArrayIndexOutOfBoundsException){
+            Realm.getDefaultInstance().use { realm ->
+                realm.where(UserData::class.java).findAll().forEach {
+                    token = it.user_token
+                }
+            }
+        }catch (e : RuntimeException){
             token = null
         }
-
         startAnimations()
         hd1.postDelayed({
             endAnimation()
             hd2.postDelayed({
                 splashLayout.visibility = View.INVISIBLE
 
-                if(token!=null) {
+                if (token != null) {
                     startActivity<MainActivity>()
                     finish()
-                }else {
+                } else {
                     startActivity<TokenRegistrationActivity>()
                     finish()
                 }
-            },2500)
-        },2000)
+            }, 2500)
+        }, 2000)
     }
 
-    private fun startAnimations(){
+    private fun startAnimations() {
         anim = AnimationUtils.loadAnimation(this@SplashActivity, R.anim.fadein)
         anim.reset()
         splashLayout.clearAnimation()
         splashLayout.startAnimation(anim)
     }
 
-    private fun endAnimation(){
+    private fun endAnimation() {
         anim = AnimationUtils.loadAnimation(this@SplashActivity, R.anim.fadeout)
         anim.reset()
         splashLayout.clearAnimation()
         splashLayout.startAnimation(anim)
     }
 
-    override fun onBackPressed(){}
+    override fun onBackPressed() {}
 }

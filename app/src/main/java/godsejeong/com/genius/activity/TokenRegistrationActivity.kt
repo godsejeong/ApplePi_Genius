@@ -57,16 +57,19 @@ class TokenRegistrationActivity : AppCompatActivity() {
 
                                 mRealm.beginTransaction()
                                 var userdata : UserData = mRealm.createObject(UserData::class.java,UUID.randomUUID().toString())
-//                                 UUID.randomUUID().toString()
-                                userdata.apply {
+                                var user = mRealm.copyFromRealm(userdata)
+                                user.apply {
+                                    this._id = response.body()!!.data!!._id
+                                    this.user_token = response.body()!!.data!!.user_token
                                     this.die = response.body()!!.data!!.die
                                     this.user_name = response.body()!!.data!!.user_name
                                     this.setting = response.body()!!.data!!.setting
                                     this.now_room = response.body()!!.data!!.now_room
                                 }
-
+                                mRealm.copyToRealm(user)
                                 var gamedata : GameData = mRealm.createObject(GameData::class.java,UUID.randomUUID().toString())
-                                gamedata.apply {
+                                var game = mRealm.copyFromRealm(gamedata)
+                                game.apply {
                                     this.card = response.body()!!.data!!.game_data!!.card
                                     this.department = response.body()!!.data!!.game_data!!.department
                                     this.lose_condition = response.body()!!.data!!.game_data!!.lose_condition
@@ -78,8 +81,12 @@ class TokenRegistrationActivity : AppCompatActivity() {
                                     this.uniqueness = response.body()!!.data!!.game_data!!.uniqueness
                                     this.win_condition = response.body()!!.data!!.game_data!!.win_condition
                                 }
+                                mRealm.copyToRealm(game)
+
                                 mRealm.commitTransaction()
-//                                val savedTest = mRealm.where(UserData::class.java).find
+
+
+
                                 Log.e("test",Gson().toJson(response.body()!!.data))
 //                                Log.e("realm",Gson().toJson(savedTest))
 
