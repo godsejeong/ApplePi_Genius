@@ -8,7 +8,6 @@ import android.view.View
 import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.LinearLayout
 import godsejeong.com.genius.R
 import godsejeong.com.genius.data.User
 import godsejeong.com.genius.data.UserData
@@ -38,6 +37,7 @@ class SplashActivity : AppCompatActivity() {
             Realm.getDefaultInstance().use { realm ->
                 realm.where(UserData::class.java).findAll().forEach {
                     token = it.user_token
+                    Log.e("splashtoken",token)
                 }
             }
         }catch (e : RuntimeException){

@@ -16,9 +16,14 @@ import android.widget.TextView
 import android.widget.FrameLayout
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.bumptech.glide.Glide
+import godsejeong.com.genius.data.GameData
 import godsejeong.com.genius.data.SaveUserData
 import godsejeong.com.genius.data.UserData
 import io.realm.Realm
+import io.realm.RealmObject.deleteFromRealm
+import io.realm.RealmResults
+import io.realm.RealmObject.deleteFromRealm
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -31,17 +36,21 @@ class ProfileActivity : AppCompatActivity() {
         Realm.getDefaultInstance().use { realm ->
 
             realm.where(UserData::class.java).findAll().forEach {
-                Log.e("token",it.user_token)
+                profileName.text = it.user_name
+            }
+
+            realm.where(GameData::class.java).findAll().forEach {
+                Glide.with(this).load("http://aws.soylatte.kr:3000" + it.profile).into(profilePhoto)
             }
         }
-
     }
+
 
     private fun showTwoButtonSnackbar() {
 
         // Create the Snackbar
         val objLayoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        var snackbar = Snackbar.make(this.findViewById<View>(android.R.id.content),"", Snackbar.LENGTH_INDEFINITE)
+        var snackbar = Snackbar.make(this.findViewById<View>(android.R.id.content), "", Snackbar.LENGTH_INDEFINITE)
 
         // Get the Snackbar layout view
         val layout = snackbar.view as Snackbar.SnackbarLayout
@@ -62,12 +71,29 @@ class ProfileActivity : AppCompatActivity() {
         val textViewOne = snackView.findViewById(R.id.cheakView) as TextView
         textViewOne.setOnClickListener {
             startActivity<MainActivity>()
+            finish()
             snackbar.dismiss()
         }
 
         val textViewTwo = snackView.findViewById(R.id.beforeView) as TextView
         textViewTwo.setOnClickListener {
             startActivity<TokenRegistrationActivity>()
+
+
+            var realm = Realm.getDefaultInstance()
+
+            val User = realm.where(UserData::class.java).findAll()
+            val Game = realm.where(GameData::class.java).findAll()
+            realm.beginTransaction()
+
+            // Delete all matches
+            User.deleteAllFromRealm()
+            Game.deleteAllFromRealm()
+
+            realm.commitTransaction()
+
+            finish()
+
             snackbar.dismiss()
         }
 

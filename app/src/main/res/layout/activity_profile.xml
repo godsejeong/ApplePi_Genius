@@ -27,26 +27,11 @@
 
         <ImageView
             android:id="@+id/profilePhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="133dp"
+            android:layout_height="161dp"
             android:layout_marginTop="33dp"
             android:gravity="center"
             android:orientation="vertical">
-
-
-            <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@mipmap/applepie"/>-->
-
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="사진을 추가하세요"-->
-            <!--android:textColor="#494949"-->
-            <!--android:layout_marginTop="11dp"-->
-            <!--android:textSize="11sp"-->
-            <!--/>-->
 
         </ImageView>
 
@@ -57,7 +42,7 @@
             android:layout_marginLeft="62.7dp"
             android:layout_marginRight="62.7dp"
 
-            android:layout_marginTop="65dp"
+            android:layout_marginTop="23dp"
             android:gravity="center"
             android:text="이름"
             android:textSize="15.3sp"
