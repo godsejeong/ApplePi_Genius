@@ -10,8 +10,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MoveUtils(){
-    fun move(context: Context,token : String, move_department : String, department : String){
+class MoveUtils{
+    fun move(context: Context,token : String, move_department : String){
         var res = Utils.postService.Move(token,move_department)
         res.enqueue(object : Callback<MoveDepartment>{
             override fun onFailure(call: Call<MoveDepartment>?, t: Throwable?) {
@@ -25,7 +25,7 @@ class MoveUtils(){
                 when(status){
                     200 -> {
                         if(message == "이동에 성공하셨습니다"){
-                            context.startActivity<DepartmentActivity>("department" to department)
+                            context.startActivity<DepartmentActivity>("department" to move_department)
                         }else if(message == "이동이 불가능합니다"){
                             context.toast(message)
                         }
@@ -36,7 +36,6 @@ class MoveUtils(){
                     }
                 }
             }
-
         })
     }
 }

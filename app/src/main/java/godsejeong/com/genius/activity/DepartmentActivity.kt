@@ -12,17 +12,40 @@ import kotlinx.android.synthetic.main.activity_department.*
 import org.jetbrains.anko.backgroundResource
 import android.app.Activity
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.GridLayoutManager
+import godsejeong.com.genius.adapter.DepartmentRecyclerAdapter
+import godsejeong.com.genius.data.ProfileData
+import godsejeong.com.genius.util.RealmUtils
+import godsejeong.com.genius.util.Utils
+import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class DepartmentActivity : AppCompatActivity() {
     var department = ""
-    var statusbarcolor = 0
+    var item: ArrayList<ProfileData> = ArrayList()
+    var name = ""
+    var img = ""
+    lateinit var adapter : DepartmentRecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_department)
+        Realm.init(applicationContext)
+
+        var layoutManager = GridLayoutManager(this,3)
+        departmentRecycler.layoutManager = layoutManager
+
+        name = RealmUtils().name()
+        img = RealmUtils().profile()
+        item.add(ProfileData(name,img))
+
+        for(i in 1..8){
+            item.add(ProfileData("이름", Utils.url + "/img/profile.png"))
+        }
+        adapter = DepartmentRecyclerAdapter(item,this)
+        departmentRecycler.adapter = adapter
 
         department = intent.getStringExtra("department")
-
         when (department) {
             "인사" -> {
                 setStatusBarColor(R.color.insa)
@@ -37,7 +60,6 @@ class DepartmentActivity : AppCompatActivity() {
                 departmentLayout.backgroundResource = R.color.sales
             }
         }
-
 
 
     }

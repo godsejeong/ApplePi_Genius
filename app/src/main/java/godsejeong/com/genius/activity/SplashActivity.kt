@@ -11,10 +11,10 @@ import android.view.animation.AnimationUtils
 import godsejeong.com.genius.R
 import godsejeong.com.genius.data.User
 import godsejeong.com.genius.data.UserData
-import godsejeong.com.genius.util.ORMUtil
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.startActivity
 import android.view.WindowManager
+import godsejeong.com.genius.util.RealmUtils
 import io.realm.Realm
 import java.util.*
 
@@ -36,12 +36,13 @@ class SplashActivity : AppCompatActivity() {
 
 
         try {
-            var realm = Realm.getDefaultInstance()
-
-            realm.where(UserData::class.java).findAll().forEach {
-                token = it.user_token
-                Log.e("splashtoken",token)
-            }
+            token = RealmUtils().token()
+//            var realm = Realm.getDefaultInstance()
+//
+//            realm.where(UserData::class.java).findAll().forEach {
+//                token = it.user_token
+//                Log.e("splashtoken",token)
+//            }
         } catch (e: RuntimeException) {
             token = null
         }

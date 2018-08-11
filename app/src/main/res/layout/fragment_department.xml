@@ -5,10 +5,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:weightSum="3"
-    android:padding="50dp"
+    android:weightSum="3.2"
+    android:paddingTop="10dp"
     android:background="@color/colorPrimaryDark">
 
+    <TextView
+        android:id="@+id/departmentText"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:text="이동할 부서을 선택해 주세요"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:padding="20dp"
+        android:orientation="vertical"
+        >
 
     <Button
         android:id="@+id/insaBtn"
@@ -33,5 +50,5 @@
         android:layout_weight="1"
         android:background="@drawable/production_btn"/>
 
-
+    </LinearLayout>
 </LinearLayout>

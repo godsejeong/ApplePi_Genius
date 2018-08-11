@@ -8,10 +8,12 @@ import godsejeong.com.genius.adapter.ProfileRecyclerAdapter
 import godsejeong.com.genius.data.GameData
 import godsejeong.com.genius.data.ProfileData
 import godsejeong.com.genius.data.UserData
+import godsejeong.com.genius.fragment.DepartmentFragment
 import godsejeong.com.genius.fragment.StartFragment
+import godsejeong.com.genius.util.RealmUtils
 import godsejeong.com.genius.util.Utils
 import io.realm.Realm
-import kotlinx.android.synthetic.main.profile_recyclerview.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(){
@@ -28,20 +30,23 @@ class MainActivity : AppCompatActivity(){
         Realm.init(applicationContext)
 
         var transation = supportFragmentManager.beginTransaction()
-        transation.add(R.id.mainLayout,StartFragment())
+        transation.add(R.id.mainLayout,DepartmentFragment())
         transation.commit()
 
-        var realm = Realm.getDefaultInstance()
+//        var realm = Realm.getDefaultInstance()
+//
+//        realm.where(UserData::class.java).findAll().forEach {
+//            name = it.user_name
+//        }
+//        realm.where(GameData::class.java).findAll().forEach {
+//            img = Utils.url + it.profile
+//        }
 
-        realm.where(UserData::class.java).findAll().forEach {
-            name = it.user_name
-        }
-        realm.where(GameData::class.java).findAll().forEach {
-            img = Utils.url + it.profile
-        }
+        name = RealmUtils().name()
+        img = Utils.url + RealmUtils().profile()
 
         var layoutManager = GridLayoutManager(this,5)
-        profileRecyclerView.layoutManager = layoutManager
+        mainRecycler.layoutManager = layoutManager
 
         item.add(ProfileData(name,img))
 
@@ -49,7 +54,7 @@ class MainActivity : AppCompatActivity(){
             item.add(ProfileData("이름",Utils.url + "/img/profile.png"))
         }
         adapter = ProfileRecyclerAdapter(item,this)
-        profileRecyclerView.adapter = adapter
+        mainRecycler.adapter = adapter
 
     }
 }

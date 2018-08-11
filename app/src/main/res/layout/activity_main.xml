@@ -14,21 +14,26 @@
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6">
-    </LinearLayout>
+        android:layout_weight="6"
+        tools:ignore="Orientation"/>
 
     <LinearLayout
         android:layout_weight="4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#ffffff"
-        android:paddingTop="30dp"
+        android:paddingTop="35dp"
         android:paddingLeft="24.3dp"
         android:paddingRight="24.3dp"
-        android:paddingBottom="22dp"
         android:orientation="vertical">
 
-    <include layout="@layout/profile_recyclerview"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mainRecycler"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/profile_list_item"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 </LinearLayout>

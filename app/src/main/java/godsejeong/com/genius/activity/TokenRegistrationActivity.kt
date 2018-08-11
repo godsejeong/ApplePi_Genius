@@ -4,21 +4,16 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import godsejeong.com.genius.R
 import godsejeong.com.genius.data.GameData
-import godsejeong.com.genius.data.SaveUserData
 import godsejeong.com.genius.util.Utils
 import godsejeong.com.genius.data.User
 import godsejeong.com.genius.data.UserData
-import godsejeong.com.genius.util.ORMUtil
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_token_registration.*
-import ninja.sakib.pultusorm.core.PultusORM
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -82,13 +77,9 @@ class TokenRegistrationActivity : AppCompatActivity() {
                                     this.win_condition = response.body()!!.data!!.game_data!!.win_condition
                                 }
                                 mRealm.copyToRealm(game)
-
                                 mRealm.commitTransaction()
 
-
-
                                 Log.e("test",Gson().toJson(response.body()!!.data))
-//                                Log.e("realm",Gson().toJson(savedTest))
 
                                 startActivity<ProfileActivity>()
                                 finish()

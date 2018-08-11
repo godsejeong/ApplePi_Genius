@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import godsejeong.com.genius.R
 import godsejeong.com.genius.data.ProfileData
 
-class ProfileRecyclerAdapter(items: ArrayList<ProfileData>, context: Context) : RecyclerView.Adapter<ProfileRecyclerAdapter.ViewHolder>() {
+class DepartmentRecyclerAdapter(items: ArrayList<ProfileData>, context: Context) : RecyclerView.Adapter<DepartmentRecyclerAdapter.ViewHolder>() {
     var items: ArrayList<ProfileData> = ArrayList()
     var context: Context? = null
 
@@ -20,9 +20,11 @@ class ProfileRecyclerAdapter(items: ArrayList<ProfileData>, context: Context) : 
         this.context = context
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent!!.context)
-                .inflate(R.layout.profile_list_item, parent, false)
+                .inflate(R.layout.department_item,parent,false)
+
         return ViewHolder(view)
     }
 
@@ -32,14 +34,12 @@ class ProfileRecyclerAdapter(items: ArrayList<ProfileData>, context: Context) : 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var data = items[position]
-        holder.name.text = data.name
+        holder.name.text = data.img
         Glide.with(context!!).load(data.img).into(holder.img)
     }
 
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var name: TextView = itemView.findViewById(R.id.profileitemName)
-        var img: ImageView = itemView.findViewById(R.id.prfileitmeImg)
+    class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+        var name: TextView = itemView.findViewById(R.id.departmentitemImg)
+        var img: ImageView = itemView.findViewById(R.id.departmentitemText)
     }
-
 }
