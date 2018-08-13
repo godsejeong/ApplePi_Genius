@@ -26,6 +26,17 @@
         </activity>
         <activity android:name=".activity.DepartmentActivity">
         </activity>
+        <activity
+            android:name=".activity.popup.FirePopupActivity"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+        <activity
+            android:name=".activity.popup.FiremessgePopupActivity"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+        <activity android:name=".activity.popup.CardPopupActivity"
+                  android:theme="@android:style/Theme.Dialog">
+        </activity>
     </application>
 
 </manifest>

@@ -1,24 +1,26 @@
 package godsejeong.com.genius.activity
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.annotation.RequiresApi
 import android.view.WindowManager
 import godsejeong.com.genius.R
 import kotlinx.android.synthetic.main.activity_department.*
 import org.jetbrains.anko.backgroundResource
-import android.app.Activity
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
+import com.github.nkzawa.emitter.Emitter
+import com.github.nkzawa.socketio.client.IO
+import com.google.gson.Gson
 import godsejeong.com.genius.adapter.DepartmentRecyclerAdapter
 import godsejeong.com.genius.data.ProfileData
 import godsejeong.com.genius.util.RealmUtils
-import godsejeong.com.genius.util.Utils
+import godsejeong.com.genius.util.RetrofitUtils
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONObject
 
 
 class DepartmentActivity : AppCompatActivity() {
@@ -32,16 +34,21 @@ class DepartmentActivity : AppCompatActivity() {
         setContentView(R.layout.activity_department)
         Realm.init(applicationContext)
 
-        var layoutManager = GridLayoutManager(this,3)
+        var layoutManager =object : GridLayoutManager(this,3){
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
         departmentRecycler.layoutManager = layoutManager
 
         name = RealmUtils().name()
         img = RealmUtils().profile()
-        item.add(ProfileData(name,img))
+        item.add(ProfileData(name,img,""))
 
         for(i in 1..8){
-            item.add(ProfileData("이름", Utils.url + "/img/profile.png"))
+            item.add(ProfileData("이름", RetrofitUtils.url + "/img/profile.png",""))
         }
+
         adapter = DepartmentRecyclerAdapter(item,this)
         departmentRecycler.adapter = adapter
 
@@ -60,8 +67,15 @@ class DepartmentActivity : AppCompatActivity() {
                 departmentLayout.backgroundResource = R.color.sales
             }
         }
+        Log.e("department",department)
+        RetrofitUtils.socket.on("department",Department)
+        RetrofitUtils.socket.connect()
 
+    }
 
+    var Department = Emitter.Listener {
+        val receivedData = it[0] as JSONObject
+        Log.e("receivedData", receivedData.toString())
     }
 
     fun setStatusBarColor(color: Int) {

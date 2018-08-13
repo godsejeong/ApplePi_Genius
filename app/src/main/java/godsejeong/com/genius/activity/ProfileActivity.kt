@@ -1,17 +1,11 @@
 package godsejeong.com.genius.activity
 
-import android.app.Service
-import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.R.id.message
 import android.support.design.widget.Snackbar
-import android.util.Log
 import android.view.View
 import godsejeong.com.genius.R
 import kotlinx.android.synthetic.main.activity_profile.*
-import org.jetbrains.anko.contentView
-import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
 import android.widget.TextView
 import android.widget.FrameLayout
@@ -21,11 +15,7 @@ import com.bumptech.glide.Glide
 import godsejeong.com.genius.data.GameData
 import godsejeong.com.genius.data.UserData
 import godsejeong.com.genius.util.RealmUtils
-import godsejeong.com.genius.util.Utils
 import io.realm.Realm
-import io.realm.RealmObject.deleteFromRealm
-import io.realm.RealmResults
-import io.realm.RealmObject.deleteFromRealm
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -37,7 +27,7 @@ class ProfileActivity : AppCompatActivity() {
         showTwoButtonSnackbar()
 
         profileName.text = RealmUtils().name()
-        Glide.with(this).load(Utils.url + RealmUtils().profile()).into(profilePhoto)
+        Glide.with(this).load(RealmUtils().profile()).into(profilePhoto)
 
     }
 

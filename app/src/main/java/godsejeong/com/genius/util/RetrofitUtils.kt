@@ -1,10 +1,16 @@
 package godsejeong.com.genius.util
 
+import com.github.nkzawa.socketio.client.IO
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object Utils {
+object RetrofitUtils {
     var url = "http://aws.soylatte.kr:3000"
+
+    var socket = IO.socket(url)
+
+    var gameStart = false
+
     var retrofit = Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())

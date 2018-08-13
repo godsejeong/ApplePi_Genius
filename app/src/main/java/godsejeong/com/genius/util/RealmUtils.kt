@@ -1,10 +1,8 @@
 package godsejeong.com.genius.util
 
-import android.content.Context
 import godsejeong.com.genius.data.GameData
 import godsejeong.com.genius.data.UserData
 import io.realm.Realm
-import ninja.sakib.pultusorm.core.PultusORM
 
 class RealmUtils() {
     var realm = Realm.getDefaultInstance()
@@ -28,7 +26,7 @@ class RealmUtils() {
     fun profile() : String {
         var img = ""
         realm.where(GameData::class.java).findAll().forEach {
-            img = Utils.url + it.profile
+            img = RetrofitUtils.url + it.profile
         }
         return img
     }

@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/departmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -84,15 +85,13 @@
         android:layout_height="match_parent"
         android:layout_marginTop="91dp"
         android:orientation="vertical"
-        android:paddingLeft="43.7dp"
-        android:paddingRight="66.3dp"
         android:weightSum="3">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/departmentRecycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="10dp"
+            android:paddingLeft="43.7dp"
             tools:listitem="@layout/department_item">
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>

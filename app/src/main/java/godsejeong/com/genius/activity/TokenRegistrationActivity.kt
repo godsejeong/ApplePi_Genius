@@ -6,7 +6,7 @@ import android.util.Log
 import com.google.gson.Gson
 import godsejeong.com.genius.R
 import godsejeong.com.genius.data.GameData
-import godsejeong.com.genius.util.Utils
+import godsejeong.com.genius.util.RetrofitUtils
 import godsejeong.com.genius.data.User
 import godsejeong.com.genius.data.UserData
 import io.realm.Realm
@@ -36,7 +36,7 @@ class TokenRegistrationActivity : AppCompatActivity() {
             }
 
             if (token.isNotEmpty()) {
-                var res = Utils.postService.Token(token)
+                var res = RetrofitUtils.postService.Token(token)
                 res.enqueue(object : Callback<User> {
                     override fun onFailure(call: Call<User>?, t: Throwable?) {
                         Log.e("tokenError", t!!.message)
