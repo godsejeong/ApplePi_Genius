@@ -12,10 +12,12 @@ import com.bumptech.glide.Glide
 import godsejeong.com.genius.R
 import godsejeong.com.genius.activity.popup.CardPopupActivity
 import godsejeong.com.genius.activity.popup.FirePopupActivity
+import godsejeong.com.genius.activity.popup.MemoPopupActivity
 import godsejeong.com.genius.data.ProfileData
 import godsejeong.com.genius.util.RealmUtils
 import godsejeong.com.genius.util.RetrofitUtils
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sdk25.coroutines.onLongClick
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
@@ -58,6 +60,15 @@ class DepartmentRecyclerAdapter(items: ArrayList<ProfileData>, context: Context)
             }
             else{
                 adaptercontext!!.toast("라운드가 시작하지 않았습니다.")
+            }
+        }
+
+        holder.itemView.onLongClick {
+            if(RealmUtils().token() == data.token){
+                adaptercontext!!.startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
+            }else {
+                adaptercontext!!.startActivity<MemoPopupActivity>("token" to data.token,
+                        "name" to data.name)
             }
         }
     }

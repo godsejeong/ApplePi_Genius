@@ -43,6 +43,6 @@
             android:background="#f9f9f9"
             android:text="확인"
             android:textColor="#000"
-            android:textSize="13sp"/>
+            android:textSize="18sp"/>
     </LinearLayout>
 </LinearLayout>

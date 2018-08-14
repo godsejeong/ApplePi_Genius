@@ -10,9 +10,11 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import godsejeong.com.genius.R
 import godsejeong.com.genius.activity.popup.CardPopupActivity
+import godsejeong.com.genius.activity.popup.MemoPopupActivity
 import godsejeong.com.genius.data.ProfileData
 import godsejeong.com.genius.util.RealmUtils
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sdk25.coroutines.onLongClick
 import org.jetbrains.anko.startActivity
 
 class ProfileRecyclerAdapter(items: ArrayList<ProfileData>, context: Context) : RecyclerView.Adapter<ProfileRecyclerAdapter.ViewHolder>() {
@@ -44,6 +46,17 @@ class ProfileRecyclerAdapter(items: ArrayList<ProfileData>, context: Context) : 
                 adaptercontext!!.startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
             }
         }
+
+        holder.itemView.onLongClick {
+            if(RealmUtils().token() == data.token){
+                adaptercontext!!.startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
+            }else{
+                adaptercontext!!.startActivity<MemoPopupActivity>("token" to data.token,
+                        "name" to data.name)
+            }
+
+        }
+
     }
 
 

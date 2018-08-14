@@ -34,8 +34,13 @@
             android:name=".activity.popup.FiremessgePopupActivity"
             android:theme="@android:style/Theme.Dialog">
         </activity>
-        <activity android:name=".activity.popup.CardPopupActivity"
-                  android:theme="@android:style/Theme.Dialog">
+        <activity
+            android:name=".activity.popup.CardPopupActivity"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+        <activity
+            android:name=".activity.popup.MemoPopupActivity"
+            android:theme="@android:style/Theme.Dialog">
         </activity>
     </application>
 

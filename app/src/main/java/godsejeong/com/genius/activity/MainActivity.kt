@@ -50,15 +50,15 @@ class MainActivity : AppCompatActivity() {
         }
         mainRecycler.layoutManager = layoutManager
 
-//        if(pref.getBoolean("game",false)){
-//            load()
-//        }else {
+        if(pref.getBoolean("game",false)){
+            load()
+        }else {
             item.add(ProfileData(name, img,RealmUtils().token()))
 
             for (i in 0..8) {
                 item.add(ProfileData("이름", RetrofitUtils.url + "/img/profile.png", ""))
             }
-//        }
+        }
         adapter = ProfileRecyclerAdapter(item, this)
         mainRecycler.adapter = adapter
 
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                     firstname,
                     firstimg,
                     firsttoken))
-//            save()
+            save()
             startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
             adapter.notifyDataSetChanged()
         }
