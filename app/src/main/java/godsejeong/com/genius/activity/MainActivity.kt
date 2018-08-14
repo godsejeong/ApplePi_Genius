@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             editer.putBoolean("game",it[0] as Boolean)
             editer.commit()
 
-            if (RetrofitUtils.gameStart) {
+            if (pref.getBoolean("game",false)) {
                 var userlist = UserListUtils(this, RealmUtils().token())
                 userlist.start()
                 userlist.join()

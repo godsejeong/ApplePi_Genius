@@ -109,12 +109,12 @@ class DepartmentActivity : AppCompatActivity() {
     var Round = Emitter.Listener {
         this.runOnUiThread {
             try {
-                val receivedData = it[0] as Boolean
+                RetrofitUtils.roundcheck = it[0] as Boolean
 
-                if (receivedData) {
+                if (RetrofitUtils.roundcheck) {
                     tt = timmer()
                     Timer().schedule(tt, 0, 1000)
-                } else if (!receivedData) {
+                } else if (!RetrofitUtils.roundcheck) {
                     tt!!.cancel()
                 }
             } catch (e: ClassCastException) {
@@ -123,7 +123,7 @@ class DepartmentActivity : AppCompatActivity() {
         }
     }
 
-    fun timmer () :TimerTask {
+    fun timmer(): TimerTask {
         var tt = object : TimerTask() {
 
             val finish = object : Handler() {
@@ -132,6 +132,7 @@ class DepartmentActivity : AppCompatActivity() {
                     toast("라운드가 종료되었습니다.")
                     startActivity<MainActivity>()
                     finish()
+                    RetrofitUtils.roundcheck = false
                 }
             }
 
@@ -142,28 +143,37 @@ class DepartmentActivity : AppCompatActivity() {
             }
 
             override fun run() {
-                if (s <= 1) {
-                    h -= 1
-                    s = 61
-                }
 
-                Log.e(h.toString(), s.toString())
-                if (s <= 0 && h <= 0) {
+                if (s <= 1 && h <= 0) {
                     h = 0
                     s = 0
 
                     val msg = finish.obtainMessage()
                     finish.sendMessage(msg)
-                    Timer().cancel()
+                    this.cancel()
+                } else {
+
+                    if (s <= 1) {
+                        h -= 1
+                        s = 61
+                    }
+
+                    Log.e(h.toString(), s.toString())
+
+                    s -= 1
+
+
+                    val msg = handler.obtainMessage()
+                    handler.sendMessage(msg)
                 }
-
-                s -= 1
-
-                val msg = handler.obtainMessage()
-                handler.sendMessage(msg)
             }
         }
         return tt
+    }
+
+    //back버튼 막기
+    override fun onBackPressed() {
+        toast("라운드가 끌나기 전까지 이동이 불가합니다.")
     }
 
     var Department = Emitter.Listener {

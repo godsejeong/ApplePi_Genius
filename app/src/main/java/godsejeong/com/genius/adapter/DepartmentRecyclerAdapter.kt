@@ -14,6 +14,7 @@ import godsejeong.com.genius.activity.popup.CardPopupActivity
 import godsejeong.com.genius.activity.popup.FirePopupActivity
 import godsejeong.com.genius.data.ProfileData
 import godsejeong.com.genius.util.RealmUtils
+import godsejeong.com.genius.util.RetrofitUtils
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
@@ -45,12 +46,18 @@ class DepartmentRecyclerAdapter(items: ArrayList<ProfileData>, context: Context)
         holder.name.text = data.name
         Glide.with(adaptercontext!!).load(data.img).into(holder.img)
         holder.itemView.onClick {
-            if (RealmUtils().token() == data.token) {
+
+            if (RetrofitUtils.roundcheck) {
+                if (RealmUtils().token() != data.token) {
+                    intent.putExtra("name", data.name + "님을 해고하시겠습니까?")
+                    intent.putExtra("oppenent_token", data.token)
+                    adaptercontext!!.startActivity(intent)
+                }
+            }else if(RealmUtils().token() == data.token){
                 adaptercontext!!.startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
-            } else {
-                intent.putExtra("name", data.name + "님을 해고하시겠습니까?")
-                intent.putExtra("oppenent_token", data.token)
-                adaptercontext!!.startActivity(intent)
+            }
+            else{
+                adaptercontext!!.toast("라운드가 시작하지 않았습니다.")
             }
         }
     }

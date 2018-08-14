@@ -9,7 +9,7 @@ object RetrofitUtils {
 
     var socket = IO.socket(url)
 
-    var gameStart = false
+    var roundcheck = false
 
     var retrofit = Retrofit.Builder()
             .baseUrl(url)
