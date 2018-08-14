@@ -1,5 +1,6 @@
 package godsejeong.com.genius.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -24,8 +25,9 @@ class DepartmentFragment : Fragment() {
         Realm.init(context)
         var view = inflater!!.inflate(R.layout.fragment_department, container, false)
 
+        var pref = context!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
         var realm = Realm.getDefaultInstance()
-
+        var bl = pref.getBoolean("game",false)
         realm.where(UserData::class.java).findAll().forEach {
             token = it.user_token
         }
@@ -48,20 +50,20 @@ class DepartmentFragment : Fragment() {
         }
 
         view.insaBtn.onClick {
-            if (RetrofitUtils.gameStart)
+            if (bl)
                 ResponseUtils().move(getContext()!!, token, "인사")
             else
                 toast("게임이 시작 후 이동이 가능합니다.")
         }
         view.ProductionBtn.onClick {
-            if (RetrofitUtils.gameStart)
+            if (bl)
                 ResponseUtils().move(getContext()!!, token, "영업")
             else
                 toast("게임이 시작 후 이동이 가능합니다.")
         }
 
         view.salesBtn.onClick {
-            if (RetrofitUtils.gameStart)
+            if (bl)
                 ResponseUtils().move(getContext()!!, token, "생산")
             else
                 toast("게임이 시작 후 이동이 가능합니다.")

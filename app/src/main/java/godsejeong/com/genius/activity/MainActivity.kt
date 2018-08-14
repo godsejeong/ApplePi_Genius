@@ -1,5 +1,6 @@
 package godsejeong.com.genius.activity
 
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
@@ -11,18 +12,15 @@ import com.google.gson.Gson
 import godsejeong.com.genius.R
 import godsejeong.com.genius.adapter.ProfileRecyclerAdapter
 import godsejeong.com.genius.data.ProfileData
-import godsejeong.com.genius.data.UserListData
 import godsejeong.com.genius.fragment.DepartmentFragment
 import godsejeong.com.genius.util.RealmUtils
 import godsejeong.com.genius.util.RetrofitUtils
 import godsejeong.com.genius.util.UserListUtils
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONArray
-import org.json.JSONObject
-import org.json.simple.parser.JSONParser
-import retrofit2.Retrofit
-import java.io.FileReader
+import com.google.gson.reflect.TypeToken
+import godsejeong.com.genius.activity.popup.CardPopupActivity
+import org.jetbrains.anko.startActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,10 +29,12 @@ class MainActivity : AppCompatActivity() {
     var name = ""
     var img = ""
     var savei: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Realm.init(applicationContext)
+        var pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
 
         var transation = supportFragmentManager.beginTransaction()
         transation.add(R.id.mainLayout, DepartmentFragment())
@@ -50,13 +50,15 @@ class MainActivity : AppCompatActivity() {
         }
         mainRecycler.layoutManager = layoutManager
 
+//        if(pref.getBoolean("game",false)){
+//            load()
+//        }else {
+            item.add(ProfileData(name, img,RealmUtils().token()))
 
-        item.add(ProfileData(name, img, ""))
-
-        for (i in 0..8) {
-            item.add(ProfileData("이름", RetrofitUtils.url + "/img/profile.png", ""))
-        }
-
+            for (i in 0..8) {
+                item.add(ProfileData("이름", RetrofitUtils.url + "/img/profile.png", ""))
+            }
+//        }
         adapter = ProfileRecyclerAdapter(item, this)
         mainRecycler.adapter = adapter
 
@@ -65,8 +67,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     var GaemStart = Emitter.Listener {
+        var pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
         this.runOnUiThread {
-            RetrofitUtils.gameStart = it[0] as Boolean
+            var editer = pref.edit()
+            editer.putBoolean("game",it[0] as Boolean)
+            editer.commit()
 
             if (RetrofitUtils.gameStart) {
                 var userlist = UserListUtils(this, RealmUtils().token())
@@ -105,8 +110,25 @@ class MainActivity : AppCompatActivity() {
                     firstname,
                     firstimg,
                     firsttoken))
-
+//            save()
+            startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
             adapter.notifyDataSetChanged()
         }
+    }
+
+    fun save(){
+        var pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        val json = Gson().toJson(item)
+        editor.putString("save", json)
+        editor.commit()
+    }
+
+    fun load(){
+        var pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
+        val json = pref.getString("save", "")
+        var items: ArrayList<ProfileData>? = ArrayList()
+        items = Gson().fromJson(json, object : TypeToken<ArrayList<ProfileData>>() {}.type)
+        if (items != null) item.addAll(items)
     }
 }

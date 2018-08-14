@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
-    android:layout_height="500dp"
-    android:background="#f50000"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context=".activity.popup.CardPopupActivity">
-
-    <ImageView
-        android:id="@+id/cardClear"
-        android:background="@drawable/ic_add_circle_outline_black_24dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
 
     <ImageView
         android:id="@+id/cardImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="3dp"
+        android:id="@+id/cardClear"
+        android:background="@drawable/ic_clear_black_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+</RelativeLayout>

@@ -34,15 +34,13 @@ class SplashActivity : AppCompatActivity() {
         var hd1 = Handler()
         var hd2 = Handler()
 
-
         try {
-            token = RealmUtils().token()
-//            var realm = Realm.getDefaultInstance()
-//
-//            realm.where(UserData::class.java).findAll().forEach {
-//                token = it.user_token
-//                Log.e("splashtoken",token)
-//            }
+            var realm = Realm.getDefaultInstance()
+
+            realm.where(UserData::class.java).findAll().forEach {
+                token = it.user_token
+                Log.e("splashtoken",token)
+            }
         } catch (e: RuntimeException) {
             token = null
         }

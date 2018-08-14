@@ -9,15 +9,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import godsejeong.com.genius.R
+import godsejeong.com.genius.activity.popup.CardPopupActivity
 import godsejeong.com.genius.data.ProfileData
+import godsejeong.com.genius.util.RealmUtils
+import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.startActivity
 
 class ProfileRecyclerAdapter(items: ArrayList<ProfileData>, context: Context) : RecyclerView.Adapter<ProfileRecyclerAdapter.ViewHolder>() {
     var items: ArrayList<ProfileData> = ArrayList()
-    var context: Context? = null
+    var adaptercontext: Context? = null
 
     init {
         this.items = items
-        this.context = context
+        this.adaptercontext = context
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,7 +37,13 @@ class ProfileRecyclerAdapter(items: ArrayList<ProfileData>, context: Context) : 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var data = items[position]
         holder.name.text = data.name
-        Glide.with(context!!).load(data.img).into(holder.img)
+        Glide.with(adaptercontext!!).load(data.img).into(holder.img)
+
+        holder.itemView.onClick {
+            if(RealmUtils().token() == data.token){
+                adaptercontext!!.startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
+            }
+        }
     }
 
 

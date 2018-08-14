@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import godsejeong.com.genius.data.GameData
 import godsejeong.com.genius.data.UserData
 import godsejeong.com.genius.util.RealmUtils
+import godsejeong.com.genius.util.RetrofitUtils
 import io.realm.Realm
 
 
@@ -26,8 +27,8 @@ class ProfileActivity : AppCompatActivity() {
         Realm.init(applicationContext)
         showTwoButtonSnackbar()
 
-        profileName.text = RealmUtils().name()
         Glide.with(this).load(RealmUtils().profile()).into(profilePhoto)
+        profileName.text = RealmUtils().name()
 
     }
 

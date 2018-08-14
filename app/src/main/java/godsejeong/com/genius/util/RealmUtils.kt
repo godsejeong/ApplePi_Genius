@@ -1,15 +1,17 @@
 package godsejeong.com.genius.util
 
+import android.content.Context
 import godsejeong.com.genius.data.GameData
 import godsejeong.com.genius.data.UserData
 import io.realm.Realm
 
 class RealmUtils() {
     var realm = Realm.getDefaultInstance()
-
+    var userdata = realm.where(UserData::class.java).findAll()
+    var gamedata =  realm.where(GameData::class.java).findAll()
     fun name() : String{
         var name = ""
-        realm.where(UserData::class.java).findAll().forEach {
+        userdata.forEach {
             name =  it.user_name
         }
         return name
@@ -17,7 +19,7 @@ class RealmUtils() {
 
     fun token() : String{
         var token = ""
-        realm.where(UserData::class.java).findAll().forEach {
+        userdata.forEach {
             token =  it.user_token
         }
         return token
@@ -25,8 +27,16 @@ class RealmUtils() {
 
     fun profile() : String {
         var img = ""
-        realm.where(GameData::class.java).findAll().forEach {
+       gamedata.forEach {
             img = RetrofitUtils.url + it.profile
+        }
+        return img
+    }
+
+    fun profileCard() : String {
+        var img = ""
+        gamedata.forEach {
+            img = RetrofitUtils.url + it.card
         }
         return img
     }
