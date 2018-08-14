@@ -114,6 +114,7 @@ class DepartmentActivity : AppCompatActivity() {
                 if (RetrofitUtils.roundcheck) {
                     tt = timmer()
                     Timer().schedule(tt, 0, 1000)
+                    toast("라운드가 시작되었습니다.")
                 } else if (!RetrofitUtils.roundcheck) {
                     tt!!.cancel()
                 }
