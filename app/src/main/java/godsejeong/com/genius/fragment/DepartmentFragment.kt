@@ -1,14 +1,18 @@
 package godsejeong.com.genius.fragment
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import godsejeong.com.genius.R
 import godsejeong.com.genius.activity.TokenRegistrationActivity
 import godsejeong.com.genius.data.GameData
+import godsejeong.com.genius.data.ProfileData
 import godsejeong.com.genius.data.UserData
 import godsejeong.com.genius.util.ResponseUtils
 import godsejeong.com.genius.util.RetrofitUtils
@@ -26,6 +30,7 @@ class DepartmentFragment : Fragment() {
         var view = inflater!!.inflate(R.layout.fragment_department, container, false)
 
         var pref = context!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
+        var main = context!!.getSharedPreferences("main", Context.MODE_PRIVATE)
         var realm = Realm.getDefaultInstance()
         var bl = pref.getBoolean("game",false)
         realm.where(UserData::class.java).findAll().forEach {
@@ -45,6 +50,11 @@ class DepartmentFragment : Fragment() {
             Game.deleteAllFromRealm()
 
             realm.commitTransaction()
+
+            var editor = main.edit()
+            editor.clear()
+            editor.commit()
+
             activity!!.startActivity<TokenRegistrationActivity>()
             activity!!.finish()
         }

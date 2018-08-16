@@ -8,8 +8,6 @@ import godsejeong.com.genius.data.UserList
 import org.json.JSONObject
 import org.json.simple.parser.JSONParser
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class UserListUtils(context: Context, token: String) : Thread() {
     var context: Context = context

@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Realm.init(applicationContext)
-        var pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
+        var game = getSharedPreferences("pref",Context.MODE_PRIVATE)
 
         var transation = supportFragmentManager.beginTransaction()
         transation.add(R.id.mainLayout, DepartmentFragment())
@@ -50,10 +50,10 @@ class MainActivity : AppCompatActivity() {
         }
         mainRecycler.layoutManager = layoutManager
 
-        if(pref.getBoolean("game",false)){
+        if(game.getBoolean("game",false)){
             load()
         }else {
-            item.add(ProfileData(name, img,RealmUtils().token()))
+            item.add(ProfileData(name,RetrofitUtils.url + "/img/profile.png",RealmUtils().token()))
 
             for (i in 0..8) {
                 item.add(ProfileData("이름", RetrofitUtils.url + "/img/profile.png", ""))
@@ -67,13 +67,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     var GaemStart = Emitter.Listener {
-        var pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
+        var pref = getSharedPreferences("main", Context.MODE_PRIVATE)
+        var game = getSharedPreferences("pref", Context.MODE_PRIVATE)
         this.runOnUiThread {
-            var editer = pref.edit()
+            var editer = game.edit()
             editer.putBoolean("game",it[0] as Boolean)
             editer.commit()
 
-            if (pref.getBoolean("game",false)) {
+            if (game.getBoolean("game",false)) {
                 var userlist = UserListUtils(this, RealmUtils().token())
                 userlist.start()
                 userlist.join()
@@ -117,7 +118,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun save(){
-        var pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
+        var pref = getSharedPreferences("main", Context.MODE_PRIVATE)
         val editor = pref.edit()
         val json = Gson().toJson(item)
         editor.putString("save", json)
@@ -125,7 +126,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun load(){
-        var pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
+        var pref = getSharedPreferences("main", Context.MODE_PRIVATE)
         val json = pref.getString("save", "")
         var items: ArrayList<ProfileData>? = ArrayList()
         items = Gson().fromJson(json, object : TypeToken<ArrayList<ProfileData>>() {}.type)

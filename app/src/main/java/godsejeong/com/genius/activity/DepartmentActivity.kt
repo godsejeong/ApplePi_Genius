@@ -18,6 +18,7 @@ import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
 import com.google.gson.Gson
 import godsejeong.com.genius.adapter.DepartmentRecyclerAdapter
+import godsejeong.com.genius.data.MembarData
 import godsejeong.com.genius.data.ProfileData
 import godsejeong.com.genius.util.RealmUtils
 import godsejeong.com.genius.util.RetrofitUtils
@@ -28,7 +29,13 @@ import kotlinx.android.synthetic.main.fragment_department.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import org.json.JSONObject
+import org.json.simple.JSONArray
+import org.json.simple.parser.JSONParser
+import retrofit2.Call
 import java.util.*
+import retrofit2.Callback
+import retrofit2.Response
+import java.lang.reflect.Member
 
 
 class DepartmentActivity : AppCompatActivity() {
@@ -36,6 +43,7 @@ class DepartmentActivity : AppCompatActivity() {
     var item: ArrayList<ProfileData> = ArrayList()
     var name = ""
     var img = ""
+    var savei = 0
     lateinit var adapter: DepartmentRecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,11 +104,66 @@ class DepartmentActivity : AppCompatActivity() {
             }
         }
         Log.e("department", department)
-        RetrofitUtils.socket.on("department", Department)
-        RetrofitUtils.socket.connect()
-
+//        RetrofitUtils.socket.on("department", Department)
         RetrofitUtils.socket.on("round_start_check", Round)
         RetrofitUtils.socket.connect()
+    }
+
+    fun Start() {
+        var res = RetrofitUtils.postService.Member(RealmUtils().token())
+        res.equals(object : Callback<MembarData> {
+            override fun onFailure(call: Call<MembarData>?, t: Throwable?) {
+                toast("ServerError")
+                Log.e("memobarerror", t!!.message)
+            }
+
+            override fun onResponse(call: Call<MembarData>?, response: Response<MembarData>) {
+                var status = response.body()!!.status
+                when (status) {
+                    200 -> {
+                        var nowRoom = response.body()!!.data.room_name
+
+                        if (nowRoom == department) {
+                            var array = JSONParser().parse(Gson().toJson(response.body()!!.data)) as JSONArray
+                            for (i in 0 until array.size) {
+                                var tmp = array[i] as org.json.simple.JSONObject
+
+                                if (RealmUtils().token() == tmp!!.get("user_token") as String) {
+                                    savei = i
+                                }
+
+                                item[i] = (ProfileData(
+                                        tmp!!.get("user_name") as String,
+                                        RetrofitUtils.url + "/img/profile.png",
+                                        tmp!!.get("user_token") as String))
+                            }
+
+                            var firstimg = item[0].img
+                            var firstname = item[0].name
+                            var firsttoken = item[0].token
+
+                            var tempimg = item[savei].img
+                            var tempname = item[savei].name
+                            var temptoken = item[savei].token
+
+                            item[0] = (ProfileData(
+                                    tempname,
+                                    tempimg,
+                                    temptoken))
+
+                            item[savei] = (ProfileData(
+                                    firstname,
+                                    firstimg,
+                                    firsttoken))
+                            adapter.notifyDataSetChanged()
+                        }
+                    }
+                    else -> {
+                        toast(response.body()!!.message)
+                    }
+                }
+            }
+        })
     }
 
     var h = 10
@@ -116,6 +179,10 @@ class DepartmentActivity : AppCompatActivity() {
                     Timer().schedule(tt, 0, 1000)
                     toast("라운드가 시작되었습니다.")
                 } else if (!RetrofitUtils.roundcheck) {
+                    toast("라운드가 종료되었습니다.")
+                    startActivity<MainActivity>()
+                    finish()
+                    RetrofitUtils.roundcheck = false
                     tt!!.cancel()
                 }
             } catch (e: ClassCastException) {
@@ -163,7 +230,6 @@ class DepartmentActivity : AppCompatActivity() {
 
                     s -= 1
 
-
                     val msg = handler.obtainMessage()
                     handler.sendMessage(msg)
                 }
@@ -177,10 +243,11 @@ class DepartmentActivity : AppCompatActivity() {
         toast("라운드가 끌나기 전까지 이동이 불가합니다.")
     }
 
-    var Department = Emitter.Listener {
-        val receivedData = it[0] as JSONObject
-        Log.e("receivedData", receivedData.toString())
-    }
+//    var Department = Emitter.Listener {
+//        Log.e("민식이 병신","씹새끼")
+//        val receivedData = it[0] as JSONObject
+//        Log.e("department", receivedData.toString())
+//    }
 
     fun setStatusBarColor(color: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

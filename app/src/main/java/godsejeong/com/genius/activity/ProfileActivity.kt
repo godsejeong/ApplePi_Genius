@@ -27,7 +27,7 @@ class ProfileActivity : AppCompatActivity() {
         Realm.init(applicationContext)
         showTwoButtonSnackbar()
 
-        Glide.with(this).load(RealmUtils().profile()).into(profilePhoto)
+        Glide.with(this).load(RetrofitUtils.url + "/img/profile.png").into(profilePhoto)
         profileName.text = RealmUtils().name()
 
     }

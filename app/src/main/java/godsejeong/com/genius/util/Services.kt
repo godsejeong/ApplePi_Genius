@@ -1,6 +1,7 @@
 package godsejeong.com.genius.util
 
 import godsejeong.com.genius.data.BasicData
+import godsejeong.com.genius.data.MembarData
 import godsejeong.com.genius.data.User
 import godsejeong.com.genius.data.UserList
 import retrofit2.Call
@@ -26,5 +27,8 @@ interface Services {
 
     @GET("/game/check/start")
     fun RoundCheck() : Call<UserList>
+
+    @GET("/game/room/member/")
+    fun Member(@Path("token") token: String) : Call<MembarData>
 
 }
