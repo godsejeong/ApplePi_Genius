@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Realm.init(applicationContext)
-        var game = getSharedPreferences("pref",Context.MODE_PRIVATE)
+        var game = getSharedPreferences("pref", Context.MODE_PRIVATE)
 
         var transation = supportFragmentManager.beginTransaction()
         transation.add(R.id.mainLayout, DepartmentFragment())
@@ -45,54 +45,56 @@ class MainActivity : AppCompatActivity() {
 
         var layoutManager = object : GridLayoutManager(this, 5) {
             override fun canScrollVertically(): Boolean {
-                return false
+                return true
             }
         }
         mainRecycler.layoutManager = layoutManager
 
-        if(game.getBoolean("game",false)){
+        if (game.getBoolean("game", false)) {
+//            if(){
+//
+//            }else{
             load()
-        }else {
-            item.add(ProfileData(name,RetrofitUtils.url + "/img/profile.png",RealmUtils().token()))
+//            }
+        } else {
+            item.add(ProfileData(name, RetrofitUtils.url + "/img/profile.png", RealmUtils().token()))
 
-            for (i in 0..8) {
+            for (i in 0..9) {
                 item.add(ProfileData("이름", RetrofitUtils.url + "/img/profile.png", ""))
             }
         }
         adapter = ProfileRecyclerAdapter(item, this)
         mainRecycler.adapter = adapter
 
-        RetrofitUtils.socket.on("game_start_check", GaemStart)
+        RetrofitUtils.socket.on("game_start_check", GameStart)
         RetrofitUtils.socket.connect()
     }
 
-    var GaemStart = Emitter.Listener {
-        var pref = getSharedPreferences("main", Context.MODE_PRIVATE)
+    var GameStart = Emitter.Listener {
         var game = getSharedPreferences("pref", Context.MODE_PRIVATE)
         this.runOnUiThread {
             var editer = game.edit()
             editer.putBoolean("game",it[0] as Boolean)
             editer.commit()
+            Log.e("game",it[0].toString())
+            var userlist = UserListUtils(this, RealmUtils().token())
+            userlist.start()
+            userlist.join()
 
-            if (game.getBoolean("game",false)) {
-                var userlist = UserListUtils(this, RealmUtils().token())
-                userlist.start()
-                userlist.join()
+            var array = userlist.userlist() as org.json.simple.JSONArray?
+            for (i in 0..array!!.size - 1) {
+                var tmp = array!![i] as org.json.simple.JSONObject?
 
-                var array = userlist.userlist() as org.json.simple.JSONArray?
-                for (i in 0 .. array!!.size-2) {
-                    var tmp = array!![i] as org.json.simple.JSONObject?
-
-                    if (RealmUtils().token() == tmp!!.get("user_token") as String) {
-                        savei = i
-                    }
-
-                    item[i] = (ProfileData(
-                            tmp!!.get("user_name") as String,
-                            RetrofitUtils.url + tmp!!.get("user_profile") as String,
-                            tmp!!.get("user_token") as String))
+                if (RealmUtils().token() == tmp!!.get("user_token") as String) {
+                    savei = i
                 }
+
+                item[i] = (ProfileData(
+                        tmp!!.get("user_name") as String,
+                        RetrofitUtils.url + tmp!!.get("user_profile") as String,
+                        tmp!!.get("user_token") as String))
             }
+
             var firstimg = item[0].img
             var firstname = item[0].name
             var firsttoken = item[0].token
@@ -100,7 +102,7 @@ class MainActivity : AppCompatActivity() {
             var tempimg = item[savei].img
             var tempname = item[savei].name
             var temptoken = item[savei].token
-            Log.e("tempimg",tempimg)
+            Log.e("tempimg", tempimg)
 
             item[0] = (ProfileData(
                     tempname,
@@ -117,7 +119,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun save(){
+    fun save() {
         var pref = getSharedPreferences("main", Context.MODE_PRIVATE)
         val editor = pref.edit()
         val json = Gson().toJson(item)
@@ -125,9 +127,10 @@ class MainActivity : AppCompatActivity() {
         editor.commit()
     }
 
-    fun load(){
+    fun load() {
         var pref = getSharedPreferences("main", Context.MODE_PRIVATE)
         val json = pref.getString("save", "")
+        Log.e("json",json)
         var items: ArrayList<ProfileData>? = ArrayList()
         items = Gson().fromJson(json, object : TypeToken<ArrayList<ProfileData>>() {}.type)
         if (items != null) item.addAll(items)

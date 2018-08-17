@@ -28,7 +28,7 @@ interface Services {
     @GET("/game/check/start")
     fun RoundCheck() : Call<UserList>
 
-    @GET("/game/room/member/")
+    @GET("/game/room/member/{token}")
     fun Member(@Path("token") token: String) : Call<MembarData>
 
 }

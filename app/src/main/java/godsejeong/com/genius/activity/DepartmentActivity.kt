@@ -24,18 +24,14 @@ import godsejeong.com.genius.util.RealmUtils
 import godsejeong.com.genius.util.RetrofitUtils
 import godsejeong.com.genius.util.RoundCheckUtils
 import io.realm.Realm
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_department.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
-import org.json.JSONObject
 import org.json.simple.JSONArray
 import org.json.simple.parser.JSONParser
 import retrofit2.Call
 import java.util.*
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.reflect.Member
 
 
 class DepartmentActivity : AppCompatActivity() {
@@ -79,9 +75,9 @@ class DepartmentActivity : AppCompatActivity() {
 
         name = RealmUtils().name()
         img = RealmUtils().profile()
-        item.add(ProfileData(name, img, RealmUtils().token()))
+        item.add(ProfileData(name,RetrofitUtils.url + "/img/profile.png", RealmUtils().token()))
 
-        for (i in 1..8) {
+        for (i in 0..9) {
             item.add(ProfileData("이름", RetrofitUtils.url + "/img/profile.png", ""))
         }
 
@@ -104,14 +100,15 @@ class DepartmentActivity : AppCompatActivity() {
             }
         }
         Log.e("department", department)
-//        RetrofitUtils.socket.on("department", Department)
+
+//      RetrofitUtils.socket.on("department", Department)
         RetrofitUtils.socket.on("round_start_check", Round)
         RetrofitUtils.socket.connect()
     }
 
     fun Start() {
         var res = RetrofitUtils.postService.Member(RealmUtils().token())
-        res.equals(object : Callback<MembarData> {
+        res.enqueue(object : Callback<MembarData> {
             override fun onFailure(call: Call<MembarData>?, t: Throwable?) {
                 toast("ServerError")
                 Log.e("memobarerror", t!!.message)
@@ -124,7 +121,7 @@ class DepartmentActivity : AppCompatActivity() {
                         var nowRoom = response.body()!!.data.room_name
 
                         if (nowRoom == department) {
-                            var array = JSONParser().parse(Gson().toJson(response.body()!!.data)) as JSONArray
+                            var array = JSONParser().parse(Gson().toJson(response.body()!!.data.user_list)) as JSONArray
                             for (i in 0 until array.size) {
                                 var tmp = array[i] as org.json.simple.JSONObject
 
@@ -155,6 +152,7 @@ class DepartmentActivity : AppCompatActivity() {
                                     firstname,
                                     firstimg,
                                     firsttoken))
+
                             adapter.notifyDataSetChanged()
                         }
                     }
@@ -178,6 +176,7 @@ class DepartmentActivity : AppCompatActivity() {
                     tt = timmer()
                     Timer().schedule(tt, 0, 1000)
                     toast("라운드가 시작되었습니다.")
+                    Start()
                 } else if (!RetrofitUtils.roundcheck) {
                     toast("라운드가 종료되었습니다.")
                     startActivity<MainActivity>()

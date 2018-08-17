@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,7 @@ class DepartmentFragment : Fragment() {
         var main = context!!.getSharedPreferences("main", Context.MODE_PRIVATE)
         var realm = Realm.getDefaultInstance()
         var bl = pref.getBoolean("game",false)
+        Log.e("bl",bl.toString())
         realm.where(UserData::class.java).findAll().forEach {
             token = it.user_token
         }
@@ -60,22 +62,26 @@ class DepartmentFragment : Fragment() {
         }
 
         view.insaBtn.onClick {
-            if (bl)
+            if (bl) {
                 ResponseUtils().move(getContext()!!, token, "인사")
+                activity!!.finish()
+            }
             else
                 toast("게임이 시작 후 이동이 가능합니다.")
         }
         view.ProductionBtn.onClick {
-            if (bl)
+            if (bl) {
                 ResponseUtils().move(getContext()!!, token, "영업")
-            else
+                activity!!.finish()
+            }else
                 toast("게임이 시작 후 이동이 가능합니다.")
         }
 
         view.salesBtn.onClick {
-            if (bl)
+            if (bl){
                 ResponseUtils().move(getContext()!!, token, "생산")
-            else
+                activity!!.finish()
+            }else
                 toast("게임이 시작 후 이동이 가능합니다.")
         }
 

@@ -57,8 +57,9 @@ class DepartmentRecyclerAdapter(items: ArrayList<ProfileData>, context: Context)
                 }
             }else if(RealmUtils().token() == data.token){
                 adaptercontext!!.startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
-            }
-            else{
+            }else if(data.name == "이름"){
+                adaptercontext!!.toast("존재하지 않는 사용자 입니다.")
+            }else{
                 adaptercontext!!.toast("라운드가 시작하지 않았습니다.")
             }
         }

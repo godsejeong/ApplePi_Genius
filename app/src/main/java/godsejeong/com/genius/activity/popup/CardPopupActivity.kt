@@ -28,7 +28,7 @@ class CardPopupActivity : Activity() {
 
         val popupView = layoutInflater.inflate(R.layout.activity_card_popup, null)
         var mPopupWindow = PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        mPopupWindow.isFocusable = true
+        mPopupWindow.isFocusable = false
 
         var img = intent.getStringExtra("img")
         Glide.with(this).load(img).into(cardImg)

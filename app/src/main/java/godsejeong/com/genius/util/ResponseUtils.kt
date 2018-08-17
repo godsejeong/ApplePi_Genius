@@ -1,5 +1,6 @@
 package godsejeong.com.genius.util
 
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.google.gson.JsonObject
