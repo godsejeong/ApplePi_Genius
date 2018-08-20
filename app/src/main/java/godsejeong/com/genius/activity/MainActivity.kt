@@ -63,8 +63,10 @@ class MainActivity : AppCompatActivity() {
                 item.add(ProfileData("이름", RetrofitUtils.url + "/img/profile.png", ""))
             }
         }
+
         adapter = ProfileRecyclerAdapter(item, this)
         mainRecycler.adapter = adapter
+
 
         RetrofitUtils.socket.on("game_start_check", GameStart)
         RetrofitUtils.socket.connect()
@@ -77,46 +79,54 @@ class MainActivity : AppCompatActivity() {
             editer.putBoolean("game",it[0] as Boolean)
             editer.commit()
             Log.e("game",it[0].toString())
-            var userlist = UserListUtils(this, RealmUtils().token())
-            userlist.start()
-            userlist.join()
+            gamelist()
+            startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
 
-            var array = userlist.userlist() as org.json.simple.JSONArray?
-            for (i in 0..array!!.size - 1) {
-                var tmp = array!![i] as org.json.simple.JSONObject?
+        }
+    }
 
-                if (RealmUtils().token() == tmp!!.get("user_token") as String) {
-                    savei = i
-                }
+    fun gamelist(){
+        var userlist = UserListUtils(this, RealmUtils().token())
+        userlist.start()
+        userlist.join()
 
-                item[i] = (ProfileData(
-                        tmp!!.get("user_name") as String,
-                        RetrofitUtils.url + tmp!!.get("user_profile") as String,
-                        tmp!!.get("user_token") as String))
+        var array = userlist.userlist() as org.json.simple.JSONArray?
+        for (i in 0 until array!!.size) {
+            var tmp = array!![i] as org.json.simple.JSONObject?
+
+            if (RealmUtils().token() == tmp!!.get("user_token") as String) {
+                savei = i
             }
 
-            var firstimg = item[0].img
-            var firstname = item[0].name
-            var firsttoken = item[0].token
-
-            var tempimg = item[savei].img
-            var tempname = item[savei].name
-            var temptoken = item[savei].token
-            Log.e("tempimg", tempimg)
-
-            item[0] = (ProfileData(
-                    tempname,
-                    tempimg,
-                    temptoken))
-
-            item[savei] = (ProfileData(
-                    firstname,
-                    firstimg,
-                    firsttoken))
-            save()
-            startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
-            adapter.notifyDataSetChanged()
+            item.add(ProfileData(
+                    tmp!!.get("user_name") as String,
+                    RetrofitUtils.url + tmp!!.get("user_profile") as String,
+                    tmp!!.get("user_token") as String))
         }
+
+        var firstimg = item[0].img
+        var firstname = item[0].name
+        var firsttoken = item[0].token
+
+        var tempimg = item[savei].img
+        var tempname = item[savei].name
+        var temptoken = item[savei].token
+        Log.e("tempimg", tempimg)
+
+        item[0] = (ProfileData(
+                tempname,
+                tempimg,
+                temptoken))
+
+        item[savei] = (ProfileData(
+                firstname,
+                firstimg,
+                firsttoken))
+        save()
+
+        adapter = ProfileRecyclerAdapter(item, this)
+        mainRecycler.adapter = adapter
+
     }
 
     fun save() {
@@ -130,9 +140,15 @@ class MainActivity : AppCompatActivity() {
     fun load() {
         var pref = getSharedPreferences("main", Context.MODE_PRIVATE)
         val json = pref.getString("save", "")
-        Log.e("json",json)
+        Log.e("loadjson",json)
         var items: ArrayList<ProfileData>? = ArrayList()
         items = Gson().fromJson(json, object : TypeToken<ArrayList<ProfileData>>() {}.type)
-        if (items != null) item.addAll(items)
+//            Log.e("items",items!!.size.toString())
+        if (items != null){
+            item.addAll(items)
+        }else if(items == null){
+//            item.clear()
+            gamelist()
+        }
     }
 }

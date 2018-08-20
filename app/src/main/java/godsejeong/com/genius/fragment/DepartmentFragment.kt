@@ -63,24 +63,21 @@ class DepartmentFragment : Fragment() {
 
         view.insaBtn.onClick {
             if (bl) {
-                ResponseUtils().move(getContext()!!, token, "인사")
-                activity!!.finish()
+                ResponseUtils().move(getContext()!!, token, "인사",activity!!)
             }
             else
                 toast("게임이 시작 후 이동이 가능합니다.")
         }
         view.ProductionBtn.onClick {
             if (bl) {
-                ResponseUtils().move(getContext()!!, token, "영업")
-                activity!!.finish()
+                ResponseUtils().move(getContext()!!, token, "영업",activity!!)
             }else
                 toast("게임이 시작 후 이동이 가능합니다.")
         }
 
         view.salesBtn.onClick {
             if (bl){
-                ResponseUtils().move(getContext()!!, token, "생산")
-                activity!!.finish()
+                ResponseUtils().move(getContext()!!, token, "생산", activity!!)
             }else
                 toast("게임이 시작 후 이동이 가능합니다.")
         }

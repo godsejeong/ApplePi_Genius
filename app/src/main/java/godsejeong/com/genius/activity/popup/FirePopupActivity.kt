@@ -40,7 +40,7 @@ class FirePopupActivity : Activity() {
                 toast("존재하지 않는 사용자 입니다.")
                 finish()
             } else if (oppenent_token != null) {
-                ResponseUtils().fire(this@FirePopupActivity, RealmUtils().token(), oppenent_token)
+                ResponseUtils().fire(this@FirePopupActivity, RealmUtils().token(), oppenent_token,name)
                 finish()
             }
         }

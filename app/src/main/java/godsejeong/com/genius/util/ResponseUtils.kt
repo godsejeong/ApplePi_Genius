@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import com.google.gson.JsonObject
 import godsejeong.com.genius.activity.DepartmentActivity
+import godsejeong.com.genius.activity.popup.FiremessgePopupActivity
 import godsejeong.com.genius.data.BasicData
 import godsejeong.com.genius.data.UserList
 import org.jetbrains.anko.startActivity
@@ -15,7 +16,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ResponseUtils{
-    fun move(context: Context,token : String, move_department : String){
+    fun move(context: Context,token : String, move_department : String,activity: Activity){
         var res = RetrofitUtils.postService.Move(token,move_department)
         res.enqueue(object : Callback<BasicData>{
             override fun onFailure(call: Call<BasicData>?, t: Throwable?) {
@@ -30,6 +31,7 @@ class ResponseUtils{
                     200 -> {
                         if(message == "이동에 성공하셨습니다"){
                             context.startActivity<DepartmentActivity>("department" to move_department)
+                            activity.finish()
                         }else if(message == "이동이 불가능합니다"){
                             context.toast(message)
                         }
@@ -43,7 +45,7 @@ class ResponseUtils{
         })
     }
 
-    fun fire(context: Context,token : String,oppenent_token : String){
+    fun fire(context: Context,token : String,oppenent_token : String,name :String){
         var res =  RetrofitUtils.postService.Fire(token,oppenent_token)
         res.enqueue(object : Callback<BasicData>{
             override fun onFailure(call: Call<BasicData>?, t: Throwable?) {
@@ -56,13 +58,12 @@ class ResponseUtils{
                 var status = response.body()!!.status
                 when(status){
                     200 ->{
-
                         if(message == "상대를 성공적으로 해고 시켰습니다!"){
-
+                            context.startActivity<FiremessgePopupActivity>("name" to name)
                         }else if(message == "상대방을 해고 할 수 없습니다"){
-
+                            context.toast(message)
                         }else if(message == "당신이 해고 되었습니다"){
-
+                            context.toast(message)
                         }
                     }
 
@@ -72,7 +73,6 @@ class ResponseUtils{
 
                 }
             }
-
         })
     }
 }

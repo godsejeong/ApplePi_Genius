@@ -20,7 +20,7 @@ interface Services {
     @FormUrlEncoded
     @POST("/game/fire")
     fun Fire(@Field("user_token") user_token : String,
-             @Field("oppenent_token ") oppenent_token : String) : Call<BasicData>
+             @Field("oppenent_token") oppenent_token : String) : Call<BasicData>
 
     @GET("/game/user/list/{token}")
     fun UserList(@Path("token") token : String) : Call<UserList>
@@ -30,5 +30,8 @@ interface Services {
 
     @GET("/game/room/member/{token}")
     fun Member(@Path("token") token: String) : Call<MembarData>
+
+//    @GET("/game/fire/user/list")
+//    fun FileList() : Call<>
 
 }
