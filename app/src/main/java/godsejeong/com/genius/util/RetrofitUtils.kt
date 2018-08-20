@@ -9,6 +9,7 @@ object RetrofitUtils {
 
     var socket = IO.socket(url)
 
+
     var roundcheck = false
 
     var retrofit = Retrofit.Builder()

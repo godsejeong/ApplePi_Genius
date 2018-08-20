@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.activity_firemessge_popup.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class FiremessgePopupActivity : Activity() {
-
+    var inputname = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -21,9 +21,13 @@ class FiremessgePopupActivity : Activity() {
         var mPopupWindow = PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         mPopupWindow.isFocusable = true
 
-        var name = intent.getStringExtra("name")
+        var name = intent.getSerializableExtra("name") as ArrayList<String>
 
-        firemessgeContent.text = name + "님이 해고 당하였습니다."
+        for(i in 0 until name.size){
+            inputname = inputname + name[i] + "\n"
+        }
+
+        firemessgeContent.text = "총" + inputname + "님이 해고 당하였습니다."
 
         firemessgeCheck.onClick {
             finish()

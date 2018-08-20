@@ -29,9 +29,7 @@ class ProfileActivity : AppCompatActivity() {
 
         Glide.with(this).load(RetrofitUtils.url + "/img/profile.png").into(profilePhoto)
         profileName.text = RealmUtils().name()
-
     }
-
 
     private fun showTwoButtonSnackbar() {
 
@@ -89,5 +87,4 @@ class ProfileActivity : AppCompatActivity() {
         // Show the Snackbar
         snackbar.show()
     }
-
 }

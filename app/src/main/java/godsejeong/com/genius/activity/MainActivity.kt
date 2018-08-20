@@ -51,11 +51,7 @@ class MainActivity : AppCompatActivity() {
         mainRecycler.layoutManager = layoutManager
 
         if (game.getBoolean("game", false)) {
-//            if(){
-//
-//            }else{
             load()
-//            }
         } else {
             item.add(ProfileData(name, RetrofitUtils.url + "/img/profile.png", RealmUtils().token()))
 
@@ -125,7 +121,7 @@ class MainActivity : AppCompatActivity() {
         save()
 
         adapter = ProfileRecyclerAdapter(item, this)
-        mainRecycler.adapter = adapter
+        adapter.notifyDataSetChanged()
     }
 
     fun save() {

@@ -42,6 +42,8 @@
             android:name=".activity.popup.MemoPopupActivity"
             android:theme="@android:style/Theme.Dialog">
         </activity>
+        <activity android:name=".activity.FrieActivity">
+        </activity>
     </application>
 
 </manifest>

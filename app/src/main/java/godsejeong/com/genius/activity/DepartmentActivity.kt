@@ -17,9 +17,11 @@ import android.widget.Toast
 import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
 import com.google.gson.Gson
+import godsejeong.com.genius.activity.popup.FiremessgePopupActivity
 import godsejeong.com.genius.adapter.DepartmentRecyclerAdapter
 import godsejeong.com.genius.data.MembarData
 import godsejeong.com.genius.data.ProfileData
+import godsejeong.com.genius.util.FireMessgeUtils
 import godsejeong.com.genius.util.RealmUtils
 import godsejeong.com.genius.util.RetrofitUtils
 import godsejeong.com.genius.util.RoundCheckUtils
@@ -32,6 +34,7 @@ import retrofit2.Call
 import java.util.*
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.collections.ArrayList
 
 
 class DepartmentActivity : AppCompatActivity() {
@@ -75,7 +78,7 @@ class DepartmentActivity : AppCompatActivity() {
 
         name = RealmUtils().name()
         img = RealmUtils().profile()
-        item.add(ProfileData(name,RetrofitUtils.url + "/img/profile.png", RealmUtils().token()))
+        item.add(ProfileData(name, RetrofitUtils.url + "/img/profile.png", RealmUtils().token()))
 
         for (i in 0..9) {
             item.add(ProfileData("이름", RetrofitUtils.url + "/img/profile.png", ""))
@@ -128,7 +131,6 @@ class DepartmentActivity : AppCompatActivity() {
                                 if (RealmUtils().token() == tmp!!.get("user_token") as String) {
                                     savei = i
                                 }
-
                                 item[i] = (ProfileData(
                                         tmp!!.get("user_name") as String,
                                         RetrofitUtils.url + "/img/profile.png",
@@ -169,24 +171,22 @@ class DepartmentActivity : AppCompatActivity() {
     var tt = timmer()
     var Round = Emitter.Listener {
         this.runOnUiThread {
-            try {
-                RetrofitUtils.roundcheck = it[0] as Boolean
+            RetrofitUtils.roundcheck = it[0] as Boolean
 
-                if (RetrofitUtils.roundcheck) {
-                    tt = timmer()
-                    Timer().schedule(tt, 0, 1000)
-                    toast("라운드가 시작되었습니다.")
-                    Start()
-                } else if (!RetrofitUtils.roundcheck) {
-                    toast("라운드가 종료되었습니다.")
-                    startActivity<MainActivity>()
-                    finish()
-                    RetrofitUtils.roundcheck = false
-                    tt!!.cancel()
-                }
-            } catch (e: ClassCastException) {
-                toast("게임이 끝났습니다.")
-                Log.e("게임이 끝났습니다",RetrofitUtils.roundcheck.toString())
+            Log.e("Roundcheak", RetrofitUtils.roundcheck.toString())
+
+            if (RetrofitUtils.roundcheck) {
+                tt = timmer()
+                Timer().schedule(tt, 0, 1000)
+                toast("라운드가 시작되었습니다.")
+                Start()
+            } else if (!RetrofitUtils.roundcheck) {
+                toast("라운드가 종료되었습니다.")
+                startActivity<FiremessgePopupActivity>("name" to firelist())
+                startActivity<MainActivity>()
+                finish()
+                RetrofitUtils.roundcheck = false
+                tt!!.cancel()
             }
         }
     }
@@ -198,6 +198,7 @@ class DepartmentActivity : AppCompatActivity() {
                 override fun handleMessage(msg: Message) {
                     departmenttime.text = h.toString() + ":" + s
                     toast("라운드가 종료되었습니다.")
+                    startActivity<FiremessgePopupActivity>("name" to firelist())
                     startActivity<MainActivity>()
                     finish()
                     RetrofitUtils.roundcheck = false
@@ -243,12 +244,6 @@ class DepartmentActivity : AppCompatActivity() {
         toast("라운드가 끌나기 전까지 이동이 불가합니다.")
     }
 
-//    var Department = Emitter.Listener {
-//        Log.e("민식이 병신","씹새끼")
-//        val receivedData = it[0] as JSONObject
-//        Log.e("department", receivedData.toString())
-//    }
-
     fun setStatusBarColor(color: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window = this.window
@@ -259,8 +254,11 @@ class DepartmentActivity : AppCompatActivity() {
         }
     }
 
-//    fun (){
-//
-//    }
+    fun firelist() : ArrayList<String>{
+        var firelist = FireMessgeUtils(this)
+        firelist.start()
+        firelist.join()
+        return firelist.getname()
+    }
 
 }

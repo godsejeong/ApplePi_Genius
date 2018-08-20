@@ -1,9 +1,6 @@
 package godsejeong.com.genius.util
 
-import godsejeong.com.genius.data.BasicData
-import godsejeong.com.genius.data.MembarData
-import godsejeong.com.genius.data.User
-import godsejeong.com.genius.data.UserList
+import godsejeong.com.genius.data.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -25,13 +22,13 @@ interface Services {
     @GET("/game/user/list/{token}")
     fun UserList(@Path("token") token : String) : Call<UserList>
 
-    @GET("/game/check/start")
+        @GET("/game/check/start")
     fun RoundCheck() : Call<UserList>
 
     @GET("/game/room/member/{token}")
     fun Member(@Path("token") token: String) : Call<MembarData>
 
-//    @GET("/game/fire/user/list")
-//    fun FileList() : Call<>
+    @GET("/game/fire/user/list")
+    fun FileList() : Call<FireListData>
 
 }
