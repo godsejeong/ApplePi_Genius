@@ -126,7 +126,6 @@ class MainActivity : AppCompatActivity() {
 
         adapter = ProfileRecyclerAdapter(item, this)
         mainRecycler.adapter = adapter
-
     }
 
     fun save() {

@@ -51,7 +51,7 @@ class DepartmentRecyclerAdapter(items: ArrayList<ProfileData>, context: Context)
 
             if (RetrofitUtils.roundcheck) {
                 if (RealmUtils().token() != data.token) {
-                    intent.putExtra("name", data.name + "님을 해고하시겠습니까?")
+                    intent.putExtra("name", data.name)
                     intent.putExtra("oppenent_token", data.token)
                     adaptercontext!!.startActivity(intent)
                 }

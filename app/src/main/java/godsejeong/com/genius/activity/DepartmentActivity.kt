@@ -186,6 +186,7 @@ class DepartmentActivity : AppCompatActivity() {
                 }
             } catch (e: ClassCastException) {
                 toast("게임이 끝났습니다.")
+                Log.e("게임이 끝났습니다",RetrofitUtils.roundcheck.toString())
             }
         }
     }
@@ -257,4 +258,9 @@ class DepartmentActivity : AppCompatActivity() {
             window.statusBarColor = ContextCompat.getColor(this, color)
         }
     }
+
+//    fun (){
+//
+//    }
+
 }

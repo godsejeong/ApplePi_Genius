@@ -22,6 +22,7 @@ class FiremessgePopupActivity : Activity() {
         mPopupWindow.isFocusable = true
 
         var name = intent.getStringExtra("name")
+
         firemessgeContent.text = name + "님이 해고 당하였습니다."
 
         firemessgeCheck.onClick {

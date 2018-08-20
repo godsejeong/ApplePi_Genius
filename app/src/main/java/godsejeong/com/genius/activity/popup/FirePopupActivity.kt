@@ -2,6 +2,7 @@ package godsejeong.com.genius.activity.popup
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.widget.LinearLayout
 import android.widget.PopupWindow
@@ -29,7 +30,8 @@ class FirePopupActivity : Activity() {
 
         oppenent_token = intent.getStringExtra("oppenent_token")
 
-        fireContent.text = name
+        fireContent.text = name + "님을 해고하시겠습니까?"
+        Log.e("namename",name)
 
         fireClear.onClick {
             finish()

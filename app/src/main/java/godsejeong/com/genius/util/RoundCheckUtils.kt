@@ -20,7 +20,6 @@ class RoundCheckUtils(context: Context) : Thread() {
             200 -> {
                 Log.e("test", "Test")
                 data = JSONParser().parse(Gson().toJson(res.clone().execute().body()!!.data)) as org.json.simple.JSONArray
-
                 var tmp = data[0] as JSONObject
                 ruturndata = tmp!!.get("now_round") as String
             }
