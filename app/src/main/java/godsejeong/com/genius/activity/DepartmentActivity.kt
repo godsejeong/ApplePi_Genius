@@ -182,9 +182,14 @@ class DepartmentActivity : AppCompatActivity() {
                 Start()
             } else if (!RetrofitUtils.roundcheck) {
                 toast("라운드가 종료되었습니다.")
-                startActivity<FiremessgePopupActivity>("name" to firelist())
                 startActivity<MainActivity>()
                 finish()
+                try {
+                    var firelist = firelist()
+                    startActivity<FiremessgePopupActivity>("name" to firelist)
+                } catch (e: NullPointerException) {
+                    Log.e("Nullerror", e.toString())
+                }
                 RetrofitUtils.roundcheck = false
                 tt!!.cancel()
             }
@@ -198,9 +203,15 @@ class DepartmentActivity : AppCompatActivity() {
                 override fun handleMessage(msg: Message) {
                     departmenttime.text = h.toString() + ":" + s
                     toast("라운드가 종료되었습니다.")
-                    startActivity<FiremessgePopupActivity>("name" to firelist())
                     startActivity<MainActivity>()
                     finish()
+                    try {
+                        var firelist = firelist()
+                        startActivity<FiremessgePopupActivity>("name" to firelist)
+                    } catch (e: NullPointerException) {
+                        Log.e("Nullerror", e.toString())
+                    }
+
                     RetrofitUtils.roundcheck = false
                 }
             }
@@ -254,7 +265,7 @@ class DepartmentActivity : AppCompatActivity() {
         }
     }
 
-    fun firelist() : ArrayList<String>{
+    fun firelist(): ArrayList<String> {
         var firelist = FireMessgeUtils(this)
         firelist.start()
         firelist.join()

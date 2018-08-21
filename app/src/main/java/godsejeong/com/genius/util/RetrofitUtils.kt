@@ -9,6 +9,7 @@ object RetrofitUtils {
 
     var socket = IO.socket(url)
 
+    var gamecheck = false
 
     var roundcheck = false
 

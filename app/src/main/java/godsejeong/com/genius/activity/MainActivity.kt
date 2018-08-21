@@ -69,15 +69,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     var GameStart = Emitter.Listener {
-        var game = getSharedPreferences("pref", Context.MODE_PRIVATE)
         this.runOnUiThread {
-            var editer = game.edit()
-            editer.putBoolean("game",it[0] as Boolean)
-            editer.commit()
-            Log.e("game",it[0].toString())
+//            var game = getSharedPreferences("pref", Context.MODE_PRIVATE)
+//            var editer = game.edit()
+            RetrofitUtils.gamecheck = it[0] as Boolean
+//            editer.commit()
+//            Log.e("game",game.getBoolean("game",false).toString())
             gamelist()
             startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
-
         }
     }
 
@@ -94,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                 savei = i
             }
 
-            item.add(ProfileData(
+            item[i] = (ProfileData(
                     tmp!!.get("user_name") as String,
                     RetrofitUtils.url + tmp!!.get("user_profile") as String,
                     tmp!!.get("user_token") as String))
@@ -120,7 +119,6 @@ class MainActivity : AppCompatActivity() {
                 firsttoken))
         save()
 
-        adapter = ProfileRecyclerAdapter(item, this)
         adapter.notifyDataSetChanged()
     }
 
@@ -138,11 +136,16 @@ class MainActivity : AppCompatActivity() {
         Log.e("loadjson",json)
         var items: ArrayList<ProfileData>? = ArrayList()
         items = Gson().fromJson(json, object : TypeToken<ArrayList<ProfileData>>() {}.type)
-//            Log.e("items",items!!.size.toString())
+
         if (items != null){
             item.addAll(items)
         }else if(items == null){
-//            item.clear()
+            item.clear()
+            item.add(ProfileData(name, RetrofitUtils.url + "/img/profile.png", RealmUtils().token()))
+
+            for (i in 0..9) {
+                item.add(ProfileData("이름", RetrofitUtils.url + "/img/profile.png", ""))
+            }
             gamelist()
         }
     }

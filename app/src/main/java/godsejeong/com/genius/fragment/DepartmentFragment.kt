@@ -30,10 +30,10 @@ class DepartmentFragment : Fragment() {
         Realm.init(context)
         var view = inflater!!.inflate(R.layout.fragment_department, container, false)
 
-        var pref = context!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
+//        var pref = context!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
         var main = context!!.getSharedPreferences("main", Context.MODE_PRIVATE)
         var realm = Realm.getDefaultInstance()
-        var bl = pref.getBoolean("game", false)
+        var bl = RetrofitUtils.gamecheck
         Log.e("bl", bl.toString())
         realm.where(UserData::class.java).findAll().forEach {
             token = it.user_token

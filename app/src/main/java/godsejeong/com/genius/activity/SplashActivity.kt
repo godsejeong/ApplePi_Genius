@@ -27,6 +27,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Realm.init(applicationContext)
         var token: String? = null
+        var die: Boolean = false
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_splash)
@@ -38,8 +39,19 @@ class SplashActivity : AppCompatActivity() {
             var realm = Realm.getDefaultInstance()
 
             realm.where(UserData::class.java).findAll().forEach {
+                die = it.die
+                Log.e("splashdie",die.toString())
+            }
+        } catch (e: RuntimeException) {
+            die = false
+        }
+
+        try {
+            var realm = Realm.getDefaultInstance()
+
+            realm.where(UserData::class.java).findAll().forEach {
                 token = it.user_token
-                Log.e("splashtoken",token)
+                Log.e("splashtoken", token)
             }
         } catch (e: RuntimeException) {
             token = null
@@ -50,13 +62,17 @@ class SplashActivity : AppCompatActivity() {
             endAnimation()
             hd2.postDelayed({
                 splashLayout.visibility = View.INVISIBLE
-
-                if (token != null) {
-                    startActivity<MainActivity>()
+                if (die) {
+                    startActivity<FrieActivity>()
                     finish()
                 } else {
-                    startActivity<TokenRegistrationActivity>()
-                    finish()
+                    if (token != null) {
+                        startActivity<MainActivity>()
+                        finish()
+                    } else {
+                        startActivity<TokenRegistrationActivity>()
+                        finish()
+                    }
                 }
             }, 2500)
         }, 2000)

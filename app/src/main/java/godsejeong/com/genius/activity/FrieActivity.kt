@@ -15,7 +15,7 @@ class FrieActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        toast("넌 해고됐다")
+        toast("넌 해고됨ㅋ")
     }
 
 }

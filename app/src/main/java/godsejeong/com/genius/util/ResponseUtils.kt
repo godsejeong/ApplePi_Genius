@@ -59,7 +59,7 @@ class ResponseUtils{
                 when(status){
                     200 ->{
                         if(message == "상대를 성공적으로 해고 시켰습니다!"){
-                            context.startActivity<FiremessgePopupActivity>("name" to name)
+                            context.toast(message)
                         }else if(message == "상대방을 해고 할 수 없습니다"){
                             context.toast(message)
                         }else if(message == "당신이 해고 되었습니다"){

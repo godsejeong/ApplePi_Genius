@@ -13,7 +13,7 @@ import retrofit2.Call
 class FireMessgeUtils(context: Context) : Thread() {
     var context: Context = context
     val res: Call<FireListData> = RetrofitUtils.postService.FileList()
-    var returndata : ArrayList<String>? = null
+    var returndata : ArrayList<String> = ArrayList()
 
     override fun run() {
         var status = res.execute().body()!!.status
@@ -23,9 +23,11 @@ class FireMessgeUtils(context: Context) : Thread() {
 
                 Log.e("test", "Test")
                 var array =JSONParser().parse(Gson().toJson(res.clone().execute().body()!!.data)) as org.json.simple.JSONArray
-                for(i in 0..array.size){
+                for(i in 0 until array.size){
                     var tmp = array[i] as JSONObject
-                    returndata!!.add(tmp.get("user_name") as String)
+                    var name = tmp.get("user_name") as String
+                    Log.e("name",name)
+                    returndata!!.add(name)
                 }
             }
 
