@@ -70,11 +70,11 @@ class MainActivity : AppCompatActivity() {
 
     var GameStart = Emitter.Listener {
         this.runOnUiThread {
-//            var game = getSharedPreferences("pref", Context.MODE_PRIVATE)
-//            var editer = game.edit()
-            RetrofitUtils.gamecheck = it[0] as Boolean
-//            editer.commit()
-//            Log.e("game",game.getBoolean("game",false).toString())
+            var game = getSharedPreferences("pref", Context.MODE_PRIVATE)
+            var editer = game.edit()
+            editer.putBoolean("game",it[0] as Boolean)
+            editer.commit()
+            Log.e("game",game.getBoolean("game",false).toString())
             gamelist()
             startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
         }

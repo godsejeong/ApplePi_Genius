@@ -30,10 +30,10 @@ class DepartmentFragment : Fragment() {
         Realm.init(context)
         var view = inflater!!.inflate(R.layout.fragment_department, container, false)
 
-//        var pref = context!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
-        var main = context!!.getSharedPreferences("main", Context.MODE_PRIVATE)
+        var game = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
+        var main = activity!!.getSharedPreferences("main", Context.MODE_PRIVATE)
         var realm = Realm.getDefaultInstance()
-        var bl = RetrofitUtils.gamecheck
+        var bl : Boolean = game.getBoolean("game",true)
         Log.e("bl", bl.toString())
         realm.where(UserData::class.java).findAll().forEach {
             token = it.user_token
@@ -65,20 +65,20 @@ class DepartmentFragment : Fragment() {
             if (bl) {
                 ResponseUtils().move(getContext()!!, token, "인사", activity!!)
             } else
-                toast("게임이 시작 후 이동이 가능합니다.")
+                toast("게임시작 후 이동이 가능합니다.")
         }
         view.ProductionBtn.onClick {
             if (bl) {
                 ResponseUtils().move(getContext()!!, token, "영업", activity!!)
             } else
-                toast("게임이 시작 후 이동이 가능합니다.")
+                toast("게임시작 후 이동이 가능합니다.")
         }
 
         view.salesBtn.onClick {
             if (bl) {
                 ResponseUtils().move(getContext()!!, token, "생산", activity!!)
             } else
-                toast("게임이 시작 후 이동이 가능합니다.")
+                toast("게임시작 후 이동이 가능합니다.")
         }
 
         return view

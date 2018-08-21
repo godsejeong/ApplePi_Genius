@@ -50,24 +50,28 @@ class DepartmentRecyclerAdapter(items: ArrayList<ProfileData>, context: Context)
         holder.itemView.onClick {
 
             if (RetrofitUtils.roundcheck) {
-                if (RealmUtils().token() != data.token) {
+                if (data.name == "이름") {
+                    adaptercontext!!.toast("존재하지 않는 사용자 입니다.")
+                } else if (RealmUtils().token() != data.token) {
                     intent.putExtra("name", data.name)
                     intent.putExtra("oppenent_token", data.token)
                     adaptercontext!!.startActivity(intent)
                 }
-            }else if(RealmUtils().token() == data.token){
-                adaptercontext!!.startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
-            }else if(data.name == "이름"){
-                adaptercontext!!.toast("존재하지 않는 사용자 입니다.")
-            }else{
+            } else {
                 adaptercontext!!.toast("라운드가 시작하지 않았습니다.")
+            }
+
+            if (RealmUtils().token() == data.token) {
+                adaptercontext!!.startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
             }
         }
 
         holder.itemView.onLongClick {
-            if(RealmUtils().token() == data.token){
+            if (RealmUtils().token() == data.token) {
                 adaptercontext!!.startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
-            }else {
+            } else if (data.name == "이름") {
+                adaptercontext!!.toast("존재하지 않는 사용자 입니다.")
+            } else {
                 adaptercontext!!.startActivity<MemoPopupActivity>("token" to data.token,
                         "name" to data.name)
             }

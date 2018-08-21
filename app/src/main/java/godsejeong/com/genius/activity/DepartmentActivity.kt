@@ -126,15 +126,18 @@ class DepartmentActivity : AppCompatActivity() {
                         if (nowRoom == department) {
                             var array = JSONParser().parse(Gson().toJson(response.body()!!.data.user_list)) as JSONArray
                             for (i in 0 until array.size) {
-                                var tmp = array[i] as org.json.simple.JSONObject
+                                var tmp = array[i] as? org.json.simple.JSONObject
 
-                                if (RealmUtils().token() == tmp!!.get("user_token") as String) {
-                                    savei = i
-                                }
-                                item[i] = (ProfileData(
-                                        tmp!!.get("user_name") as String,
-                                        RetrofitUtils.url + "/img/profile.png",
-                                        tmp!!.get("user_token") as String))
+                                try {
+                                    if (RealmUtils().token() == tmp!!.get("user_token") as String) {
+                                        savei = i
+                                    }
+
+                                    item[i] = (ProfileData(
+                                            tmp!!.get("user_name") as String,
+                                            RetrofitUtils.url + "/img/profile.png",
+                                            tmp!!.get("user_token") as String))
+                                } catch (e: KotlinNullPointerException) {}
                             }
 
                             var firstimg = item[0].img

@@ -32,7 +32,7 @@ class ResponseUtils{
                         if(message == "이동에 성공하셨습니다"){
                             context.startActivity<DepartmentActivity>("department" to move_department)
                             activity.finish()
-                        }else if(message == "이동이 불가능합니다"){
+                        }else if(message == "원래 부서로 이동해주세요"){
                             context.toast(message)
                         }
                     }

@@ -16,6 +16,7 @@ import godsejeong.com.genius.util.RealmUtils
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.sdk25.coroutines.onLongClick
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 class ProfileRecyclerAdapter(items: ArrayList<ProfileData>, context: Context) : RecyclerView.Adapter<ProfileRecyclerAdapter.ViewHolder>() {
     var items: ArrayList<ProfileData> = ArrayList()
@@ -42,15 +43,17 @@ class ProfileRecyclerAdapter(items: ArrayList<ProfileData>, context: Context) : 
         Glide.with(adaptercontext!!).load(data.img).into(holder.img)
 
         holder.itemView.onClick {
-            if(RealmUtils().token() == data.token){
+            if (RealmUtils().token() == data.token) {
                 adaptercontext!!.startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
             }
         }
 
         holder.itemView.onLongClick {
-            if(RealmUtils().token() == data.token){
+            if (RealmUtils().token() == data.token) {
                 adaptercontext!!.startActivity<CardPopupActivity>("img" to RealmUtils().profileCard())
-            }else{
+            } else if (data.name == "이름") {
+                adaptercontext!!.toast("존재하지 않는 사용자 입니다.")
+            } else {
                 adaptercontext!!.startActivity<MemoPopupActivity>("token" to data.token,
                         "name" to data.name)
             }
