@@ -15,24 +15,27 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="6"
-        tools:ignore="Orientation"/>
-
-    <LinearLayout
-        android:layout_weight="4"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="#ffffff"
-        android:paddingTop="35dp"
-        android:paddingLeft="24.3dp"
-        android:paddingRight="24.3dp"
+        android:gravity="center"
         android:orientation="vertical">
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:paddingLeft="24.3dp"
+        android:paddingRight="24.3dp"
+        android:paddingTop="35dp">
+
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/mainRecycler"
             xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/mainRecycler"
             android:layout_width="match_parent"
-            tools:listitem="@layout/profile_list_item"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:listitem="@layout/profile_list_item">
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>

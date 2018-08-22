@@ -33,7 +33,7 @@ class DepartmentFragment : Fragment() {
         var game = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
         var main = activity!!.getSharedPreferences("main", Context.MODE_PRIVATE)
         var realm = Realm.getDefaultInstance()
-        var bl : Boolean = game.getBoolean("game",true)
+        var bl : Boolean = game.getBoolean("game",false)
         Log.e("bl", bl.toString())
         realm.where(UserData::class.java).findAll().forEach {
             token = it.user_token
@@ -62,20 +62,20 @@ class DepartmentFragment : Fragment() {
         }
 
         view.insaBtn.onClick {
-            if (bl) {
+            if (game.getBoolean("game",false)) {
                 ResponseUtils().move(getContext()!!, token, "인사", activity!!)
             } else
                 toast("게임시작 후 이동이 가능합니다.")
         }
         view.ProductionBtn.onClick {
-            if (bl) {
+            if (game.getBoolean("game",false)) {
                 ResponseUtils().move(getContext()!!, token, "영업", activity!!)
             } else
                 toast("게임시작 후 이동이 가능합니다.")
         }
 
         view.salesBtn.onClick {
-            if (bl) {
+            if (game.getBoolean("game",false)) {
                 ResponseUtils().move(getContext()!!, token, "생산", activity!!)
             } else
                 toast("게임시작 후 이동이 가능합니다.")

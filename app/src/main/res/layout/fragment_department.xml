@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="0.2"
-        android:text="이동할 부서을 선택해 주세요"/>
+        android:text="이동할 부서를 선택해 주세요"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

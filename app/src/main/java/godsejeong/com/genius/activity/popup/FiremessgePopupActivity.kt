@@ -3,6 +3,7 @@ package godsejeong.com.genius.activity.popup
 import android.app.Activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.widget.LinearLayout
 import android.widget.PopupWindow
@@ -34,10 +35,10 @@ class FiremessgePopupActivity : Activity() {
 
         for (i in 0 until name.size) {
             inputname = inputname + name[i] + ", "
-            if(RealmUtils().name() == name[i]){
+            if (RealmUtils().name() == name[i]) {
 
                 mRealm.beginTransaction()
-                var userdata : UserData = mRealm.createObject(UserData::class.java, UUID.randomUUID().toString())
+                var userdata: UserData = mRealm.createObject(UserData::class.java, UUID.randomUUID().toString())
                 userdata.apply {
                     this.die = true
                 }
@@ -46,8 +47,10 @@ class FiremessgePopupActivity : Activity() {
                 startActivity<FrieActivity>()
             }
         }
-        firemessgeContent.text = inputname + "님이 해고 당하였습니다."
 
+        if (name.size != 0) {
+            firemessgeContent.text = inputname + "님이 해고 당하였습니다."
+        }
 
 
         firemessgeCheck.onClick {

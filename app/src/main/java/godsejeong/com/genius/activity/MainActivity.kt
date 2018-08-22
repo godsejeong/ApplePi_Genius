@@ -20,7 +20,14 @@ import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
 import com.google.gson.reflect.TypeToken
 import godsejeong.com.genius.activity.popup.CardPopupActivity
+import godsejeong.com.genius.data.GameData
+import godsejeong.com.genius.data.UserData
+import godsejeong.com.genius.util.ResponseUtils
+import org.jetbrains.anko.activityManager
+import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.toast
 
 
 class MainActivity : AppCompatActivity() {
