@@ -29,8 +29,8 @@ class RealmUtils() {
         var img = ""
        gamedata.forEach {
             img = RetrofitUtils.url + it.profile
-        }
-        return img
+       }
+       return img
     }
 
     fun profileCard() : String {

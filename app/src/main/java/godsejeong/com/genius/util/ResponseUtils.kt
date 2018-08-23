@@ -64,6 +64,7 @@ class ResponseUtils{
                         }else if(message == "상대방을 해고 할 수 없습니다"){
                             context.toast(message)
                         }else if(message == "당신이 해고 되었습니다"){
+                            RetrofitUtils.friecheak = true
                             context.toast(message)
                         }
                     }
