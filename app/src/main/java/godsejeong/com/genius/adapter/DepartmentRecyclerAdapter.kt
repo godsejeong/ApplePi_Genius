@@ -53,9 +53,13 @@ class DepartmentRecyclerAdapter(items: ArrayList<ProfileData>, context: Context)
                 if (data.name == "이름") {
                     adaptercontext!!.toast("존재하지 않는 사용자 입니다.")
                 } else if (RealmUtils().token() != data.token) {
-                    intent.putExtra("name", data.name)
-                    intent.putExtra("oppenent_token", data.token)
-                    adaptercontext!!.startActivity(intent)
+                    if (!RetrofitUtils.friecheak) {
+                        intent.putExtra("name", data.name)
+                        intent.putExtra("oppenent_token", data.token)
+                        adaptercontext!!.startActivity(intent)
+                    }else if(RetrofitUtils.friecheak){
+                        adaptercontext!!.toast("이미 해고를 하였습니다.")
+                    }
                 }
             } else {
                 adaptercontext!!.toast("라운드가 시작하지 않았습니다.")

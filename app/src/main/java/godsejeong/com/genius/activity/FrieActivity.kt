@@ -11,7 +11,6 @@ class FrieActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_frie)
 
-
     }
 
     override fun onBackPressed() {

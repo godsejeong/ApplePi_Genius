@@ -64,8 +64,9 @@ class DepartmentFragment : Fragment() {
         view.insaBtn.onClick {
             if (game.getBoolean("game",false)) {
                 ResponseUtils().move(getContext()!!, token, "인사", activity!!)
-            } else
+            }else{
                 toast("게임시작 후 이동이 가능합니다.")
+            }
         }
         view.ProductionBtn.onClick {
             if (game.getBoolean("game",false)) {

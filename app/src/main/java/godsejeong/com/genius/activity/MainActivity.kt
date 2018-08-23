@@ -31,8 +31,8 @@ import org.jetbrains.anko.toast
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var adapter: ProfileRecyclerAdapter
     var item: ArrayList<ProfileData> = ArrayList()
+    var adapter = ProfileRecyclerAdapter(item,this)
     var name = ""
     var img = ""
     var savei: Int = 0
@@ -148,8 +148,8 @@ class MainActivity : AppCompatActivity() {
             item.addAll(items)
         }else if(items == null){
             item.clear()
-            item.add(ProfileData(name, RetrofitUtils.url + "/img/profile.png", RealmUtils().token()))
 
+            item.add(ProfileData(name, RetrofitUtils.url + "/img/profile.png", RealmUtils().token()))
             for (i in 0..9) {
                 item.add(ProfileData("이름", RetrofitUtils.url + "/img/profile.png", ""))
             }

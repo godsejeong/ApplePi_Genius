@@ -193,6 +193,7 @@ class DepartmentActivity : AppCompatActivity() {
                 } catch (e: NullPointerException) {
                     Log.e("Nullerror", e.toString())
                 }
+                RetrofitUtils.friecheak = false
                 RetrofitUtils.roundcheck = false
                 tt!!.cancel()
             }
